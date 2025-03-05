@@ -3,6 +3,11 @@
 
 #include <QMainWindow>
 
+#define LEN_TEXT_ERROR_MESSAGE 150
+#define LEN_DATA 100
+
+void display_error_message(char text[]);
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -16,6 +21,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void read_data_from_transfer();
 
 private:
     Ui::MainWindow *ui;
