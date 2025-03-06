@@ -2,7 +2,7 @@
 #include "../inc/errors.h"
 #include "../inc/struct.h"
 
-int read_len_from_file(dataset &data, FILE *file_source)
+int read_len_from_file(dataset &data, FILE *file_source, mode_write_len mode_write)
 {
     int rc, error_code = OK;
     int len_data_buffer;
@@ -12,7 +12,10 @@ int read_len_from_file(dataset &data, FILE *file_source)
     else if (len_data_buffer <= 0)
         error_code = ERROR_LEN_DATA;
     else
-        data.cnt_points = len_data_buffer;
+        if (mode_write == CNT_POINTS)
+            data.cnt_points = len_data_buffer;
+        else
+            data.cnt_connections = len_data_buffer;
     return error_code;
 }
 
@@ -22,7 +25,7 @@ int read_data_points(dataset &data, FILE *file_source)
     double x_from_file = 0, y_from_file = 0, z_from_file = 0;
     size_t iter = 0;
 
-    error_code = read_len_from_file(data, file_source);
+    error_code = read_len_from_file(data, file_source, CNT_POINTS);
 
     while (iter < data.cnt_points && error_code == OK)
     {
@@ -43,7 +46,7 @@ int read_data_connection(dataset &data, FILE *file_source)
     int dot_1 = 0, dot_2 = 0;
     size_t iter = 0;
 
-    error_code = read_len_from_file(data, file_source);
+    error_code = read_len_from_file(data, file_source, CNT_CONNECTIONS);
 
     while (iter < data.cnt_connections && error_code == OK)
     {
