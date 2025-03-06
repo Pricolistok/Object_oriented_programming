@@ -24,4 +24,31 @@ typedef struct params
 } params;
 
 
+typedef struct point
+{
+    double x;
+    double y;
+    double z;
+} point;
+
+typedef struct connection
+{
+    int index_dot_1;
+    int index_dot_2;
+
+} connection;
+
+
+typedef struct dataset
+{
+    size_t cnt_points = 0;
+    point *points;
+
+    size_t cnt_connections = 0;
+    connection *connections;
+
+} dataset;
+
+
+
 #endif

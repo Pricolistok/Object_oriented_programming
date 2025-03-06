@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "maindrawer.h"
 
 #define LEN_TEXT_ERROR_MESSAGE 150
 #define LEN_DATA 100
@@ -35,5 +36,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    MyDrawWidget *drawWidget;
 };
 #endif

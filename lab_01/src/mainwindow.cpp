@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->widget->setStyleSheet("background-color:black;");
+    drawWidget = new MyDrawWidget(ui->widget);
+    drawWidget->setGeometry(0, 0, ui->widget->width(), ui->widget->height());
+    drawWidget->show();
+    drawWidget->update();
     connect(ui->pushButton_transfer, &QPushButton::clicked, this, &MainWindow::read_data_from_transfer);
     connect(ui->pushButton_scale, &QPushButton::clicked, this, &MainWindow::read_data_from_scale);
     connect(ui->pushButton_rotate, &QPushButton::clicked, this, &MainWindow::read_data_from_rotate);
@@ -151,7 +155,7 @@ void sender_data(double data_x, double data_y, double data_z, mode_reset_data mo
             data_params.rotate_param.angle_z = data_z;
             break;
     }
-    printf("%lf\n", data_params.rotate_param.angle_x);
+    printf("%lf\n", data_params.rotate_param.angle_z);
 }
 
 
