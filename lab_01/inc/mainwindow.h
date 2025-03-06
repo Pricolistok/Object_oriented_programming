@@ -6,7 +6,15 @@
 #define LEN_TEXT_ERROR_MESSAGE 150
 #define LEN_DATA 100
 
-void display_error_message(char text[]);
+typedef enum mode_reset_data
+{
+    TRANSFER,
+    SCALE,
+    ROTATE
+} mode_reset_data;
+
+void display_error_message(const char text[LEN_TEXT_ERROR_MESSAGE]);
+void sender_data(double data_x, double data_y, double data_z, mode_reset_data mode_reset);
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,8 +30,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void read_data_from_transfer();
+    void read_data_from_scale();
+    void read_data_from_rotate();
 
 private:
     Ui::MainWindow *ui;
 };
-#endif // MAINWINDOW_H
+#endif

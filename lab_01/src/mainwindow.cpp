@@ -1,11 +1,159 @@
 #include "inc/mainwindow.h"
 #include "ui_mainwindow.h"
 //#include "inc/process.h"
-#include "inc/work_with_data.h"
+//#include "inc/work_with_data.h"
+#include "inc/struct.h"
 #include <QMessageBox>
+#include <QString>
 #include <string>
 
 using namespace std;
+
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    ui->widget->setStyleSheet("background-color:black;");
+    connect(ui->pushButton_transfer, &QPushButton::clicked, this, &MainWindow::read_data_from_transfer);
+    connect(ui->pushButton_scale, &QPushButton::clicked, this, &MainWindow::read_data_from_scale);
+    connect(ui->pushButton_rotate, &QPushButton::clicked, this, &MainWindow::read_data_from_rotate);
+}
+
+
+
+void MainWindow::read_data_from_transfer()
+{
+    int error = 0;
+    QString data_x = ui->lineEdit_transfer_X->text();
+    QString data_y = ui->lineEdit_transfer_Y->text();
+    QString data_z = ui->lineEdit_transfer_Z->text();
+    double x_result, y_result, z_result;
+
+    bool result = true;
+
+    x_result = data_x.toDouble(&result);
+    if (!result)
+    {
+        error = 1;
+        display_error_message("Ошибка при вводе сдвига по X!");
+    }
+
+    y_result = data_y.toDouble(&result);
+    if (!result)
+    {
+        error = 1;
+        display_error_message("Ошибка при вводе сдвига по Y!");
+    }
+
+    z_result = data_z.toDouble(&result);
+    if (!result)
+    {
+        error = 1;
+        display_error_message("Ошибка при вводе сдвига по Z!");
+    }
+    if (error == 0)
+        sender_data(x_result, y_result, z_result, TRANSFER);
+}
+
+
+void MainWindow::read_data_from_scale()
+{
+    int error = 0;
+    QString data_x = ui->lineEdit_scale_X->text();
+    QString data_y = ui->lineEdit_scale_Y->text();
+    QString data_z = ui->lineEdit_scale_Z->text();
+    double x_result, y_result, z_result;
+    bool result = true;
+
+    x_result = data_x.toDouble(&result);
+    if (!result)
+    {
+        error = 1;
+        display_error_message("Ошибка при вводе коэффициента увеличения по X!");
+    }
+
+    y_result = data_y.toDouble(&result);
+    if (!result)
+    {
+        error = 1;
+        display_error_message("Ошибка при вводе коэффициента увеличения по Y!");
+    }
+
+    z_result = data_z.toDouble(&result);
+    if (!result)
+    {
+        error = 1;
+        display_error_message("Ошибка при вводе коэффициента увеличения по Z!");
+    }
+
+    if (error == 0)
+        sender_data(x_result, y_result, z_result, SCALE);
+}
+
+
+void MainWindow::read_data_from_rotate()
+{
+    int error = 0;
+    QString data_x = ui->lineEdit_rotate_X->text();
+    QString data_y = ui->lineEdit_rotate_Y->text();
+    QString data_z = ui->lineEdit_rotate_Z->text();
+    double x_result, y_result, z_result;
+    bool result = true;
+
+    x_result = data_x.toDouble(&result);
+    if (!result)
+    {
+        error = 1;
+        display_error_message("Ошибка при вводе поворота по X!");
+    }
+
+    y_result = data_y.toDouble(&result);
+    if (!result)
+    {
+        error = 1;
+        display_error_message("Ошибка при вводе поворота по Y!");
+    }
+
+    z_result = data_z.toDouble(&result);
+    if (!result)
+    {
+        error = 1;
+        display_error_message("Ошибка при вводе поворота по Z!");
+    }
+
+    if (error == 0)
+        sender_data(x_result, y_result, z_result, ROTATE);
+}
+
+
+void sender_data(double data_x, double data_y, double data_z, mode_reset_data mode_reset)
+{
+    params data_params;
+    switch (mode_reset)
+    {
+        case TRANSFER:
+            data_params.transfer_param.dx = data_x;
+            data_params.transfer_param.dy = data_y;
+            data_params.transfer_param.dz = data_z;
+            break;
+
+        case SCALE:
+            data_params.scale_param.kx = data_x;
+            data_params.scale_param.ky = data_y;
+            data_params.scale_param.kz = data_z;
+            break;
+
+        case ROTATE:
+            data_params.rotate_param.angle_x = data_x;
+            data_params.rotate_param.angle_y = data_y;
+            data_params.rotate_param.angle_z = data_z;
+            break;
+    }
+    printf("%lf\n", data_params.rotate_param.angle_x);
+}
+
 
 void display_error_message(const char text[LEN_TEXT_ERROR_MESSAGE])
 {
@@ -15,48 +163,8 @@ void display_error_message(const char text[LEN_TEXT_ERROR_MESSAGE])
     message.exec();
 }
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-    ui->widget->setStyleSheet("background-color:black;");
-    connect(ui->pushButton_transfer, &QPushButton::clicked, this, &MainWindow::read_data_from_transfer);
-}
 
 
-void MainWindow::read_data_from_transfer()
-{
-    string data_x = ui->lineEdit_transfer_X->text().toStdString();
-    string data_y = ui->lineEdit_transfer_Y->text().toStdString();
-    string data_z = ui->lineEdit_transfer_Z->text().toStdString();
-    const char *data;
-    size_t len_data;
-    bool result;
-
-    data = data_x.c_str();
-    len_data = data_x.length();
-    result = validate_nums(data, len_data);
-
-    if (!result)
-        display_error_message("Ошибка при вводе сдвига по X!");
-
-    data = data_y.c_str();
-    len_data = data_x.length();
-    result = validate_nums(data, len_data);
-
-    if (!result)
-        display_error_message("Ошибка при вводе сдвига по Y!");
-
-    data = data_z.c_str();
-    len_data = data_x.length();
-    result = validate_nums(data, len_data);
-
-    if (!result)
-        display_error_message("Ошибка при вводе сдвига по Z!");
-
-
-}
 
 
 MainWindow::~MainWindow()
