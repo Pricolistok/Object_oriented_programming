@@ -1,4 +1,5 @@
 #include "../inc/process.h"
+#include "../inc/maindrawer.h"
 #include <cstdio>
 #include <cstdlib>
 
@@ -17,8 +18,20 @@ void print_all(params data_params)
     printf("%lf -  rY\n", data_params.rotate_param.angle_y);
     printf("%lf -  rZ\n", data_params.rotate_param.angle_y);
 
-    dataset *data = (dataset *)malloc(sizeof(dataset));
+    dataset data;
+
     read_data_from_file(data);
-    printf("%zu - l\n", data->cnt_points);
+
+    printf("%zu - l\n", data.cnt_points);
+//    drawWidget.len = data.cnt_points;
+//    for (size_t i = 0; i < data.cnt_points; i++)
+//    {
+//        drawWidget.x_data[i] = data.points[i].x;
+//        drawWidget.y_data[i] = data.points[i].y;
+//        printf("%lf %lf %lf\n", data.points[i].x, data.points[i].y, data.points[i].z);
+    printf("%zu - l\n", data.cnt_connections);
+    for (size_t i = 0; i < data.cnt_connections; i++)
+        printf("%d %d\n", data.connections[i].index_dot_1, data.connections[i].index_dot_2);
+
 }
 

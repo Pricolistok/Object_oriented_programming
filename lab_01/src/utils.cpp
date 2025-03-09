@@ -25,37 +25,43 @@ int read_len_from_file(size_t &cnt_data, FILE *file_source)
     return error_code;
 }
 
-int read_data_points(point *&points, FILE *file_source, size_t cnt_points)
-{
-    int rc, error_code = OK;
-    double x_from_file = 0, y_from_file = 0, z_from_file = 0;
-    size_t iter = 0;
 
+int read_data_points(point *points, FILE *file_source, size_t cnt_points)
+{
+    int error_code = OK;
     if (file_source == NULL)
         error_code = ERROR_OPEN_FILE;
 
-    while (iter < cnt_points && error_code == OK)
+    int rc;
+    double x_from_file = 0, y_from_file = 0, z_from_file = 0;
+    size_t iter = 0;
+
+    while (error_code == OK && iter < cnt_points)
     {
         rc = fscanf(file_source, "%lf %lf %lf", &x_from_file, &y_from_file, &z_from_file);
         if (rc != 3)
             error_code = ERROR_VALUE_IN_FILE;
-        ////
-        points[iter].x = x_from_file;
-        points[iter].y = y_from_file;
-        points[iter].z = z_from_file;
-        iter++;
+        else
+        {
+            points[iter].x = x_from_file;
+            points[iter].y = y_from_file;
+            points[iter].z = z_from_file;
+            iter++;
+        }
     }
     return error_code;
 }
 
-int read_data_connection(connection *&connections, FILE *file_source, size_t cnt_connections)
+int read_data_connection(connection *connections, FILE *file_source, size_t cnt_connections)
 {
-    int rc, error_code = OK;
-    int dot_1 = 0, dot_2 = 0;
-    size_t iter = 0;
+    int error_code = OK;
 
     if (file_source == NULL)
         error_code = ERROR_OPEN_FILE;
+
+    int rc;
+    int dot_1 = 0, dot_2 = 0;
+    size_t iter = 0;
 
     while (iter < cnt_connections && error_code == OK)
     {
@@ -73,7 +79,7 @@ int read_data_connection(connection *&connections, FILE *file_source, size_t cnt
 }
 
 
-int read_data_from_file(dataset *&data)
+int read_data_from_file(dataset &data)
 {
     int error_code = OK;
     size_t len_buffer = 0;
@@ -87,10 +93,10 @@ int read_data_from_file(dataset *&data)
 
     if (!error_code)
     {
-        data->cnt_points = len_buffer;
-        data->points = (point *) malloc(sizeof(point) * len_buffer);
-        if (data->points)
-            error_code = read_data_points(data->points, file_source, len_buffer);
+        data.cnt_points = len_buffer;
+        data.points = (point *) malloc(sizeof(point) * len_buffer);
+        if (data.points)
+            error_code = read_data_points(data.points, file_source, len_buffer);
         else
             error_code = ERROR_ADD_MEMORY;
     }
@@ -100,16 +106,15 @@ int read_data_from_file(dataset *&data)
 
     if (!error_code)
     {
-        data->cnt_connections = len_buffer;
-        data->connections= (connection *)malloc(sizeof(connection) * len_buffer);
-        if (data->connections)
-            error_code = read_data_connection(data->connections, file_source, len_buffer);
+        data.cnt_connections = len_buffer;
+        data.connections= (connection *)malloc(sizeof(connection) * len_buffer);
+        if (data.connections)
+            error_code = read_data_connection(data.connections, file_source, len_buffer);
         else
         {
             error_code = ERROR_ADD_MEMORY;
-            free(data->points);
+            free(data.points);
         }
     }
     return error_code;
 }
-
