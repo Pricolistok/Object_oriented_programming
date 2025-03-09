@@ -32,14 +32,5 @@ void print_all(dataset &data, params data_params, mode_reset_data mode_reset)
         error_code = read_data_from_file(data);
         if (error_code != OK)
             data.full_data = true;
-    }
-
-
-    printf("%zu - l\n", data.cnt_points);
-    for (size_t i = 0; i < data.cnt_points; i++)
-        printf("%lf %lf %lf\n", data.points[i].x, data.points[i].y, data.points[i].z);
-    printf("%zu - l\n", data.cnt_connections);
-    for (size_t i = 0; i < data.cnt_connections; i++)
-        printf("%d %d\n", data.connections[i].index_dot_1, data.connections[i].index_dot_2);
-}
+    }}
 
