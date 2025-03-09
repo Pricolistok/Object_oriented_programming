@@ -5,5 +5,6 @@
 #define ERROR_OPEN_FILE 100
 #define ERROR_LEN_DATA 101
 #define ERROR_VALUE_IN_FILE 102
+#define ERROR_ADD_MEMORY 103
 
 #endif

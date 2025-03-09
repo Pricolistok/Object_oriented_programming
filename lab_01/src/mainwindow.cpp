@@ -1,6 +1,6 @@
 #include "inc/mainwindow.h"
 #include "ui_mainwindow.h"
-//#include "inc/process.h"
+#include "inc/process.h"
 //#include "inc/work_with_data.h"
 #include "inc/struct.h"
 #include <QMessageBox>
@@ -155,7 +155,7 @@ void sender_data(double data_x, double data_y, double data_z, mode_reset_data mo
             data_params.rotate_param.angle_z = data_z;
             break;
     }
-    printf("%lf\n", data_params.rotate_param.angle_z);
+    print_all(data_params);
 }
 
 
