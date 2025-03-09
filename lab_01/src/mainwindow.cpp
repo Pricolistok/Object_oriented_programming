@@ -132,7 +132,7 @@ void MainWindow::read_data_from_rotate()
 }
 
 
-void sender_data(double data_x, double data_y, double data_z, mode_reset_data mode_reset)
+void MainWindow::sender_data(double data_x, double data_y, double data_z, mode_reset_data mode_reset)
 {
     params data_params;
     switch (mode_reset)
@@ -155,7 +155,8 @@ void sender_data(double data_x, double data_y, double data_z, mode_reset_data mo
             data_params.rotate_param.angle_z = data_z;
             break;
     }
-    print_all(data_params);
+    print_all(drawWidget->data, data_params, mode_reset);
+    drawWidget->update();
 }
 
 

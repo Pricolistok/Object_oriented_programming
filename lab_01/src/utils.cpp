@@ -116,5 +116,6 @@ int read_data_from_file(dataset &data)
             free(data.points);
         }
     }
+    fclose(file_source);
     return error_code;
 }

@@ -3,27 +3,27 @@
 
 #include <cstdlib>
 
-typedef struct params
+typedef union params
 {
-    union
+    struct
     {
         double dx;
         double dy;
         double dz;
     } transfer_param;
-    union
+    struct
     {
         double kx;
         double ky;
         double kz;
     } scale_param;
-    union
+    struct
     {
         double angle_x;
         double angle_y;
         double angle_z;
     } rotate_param;
-} params;
+}params;
 
 
 typedef struct point
@@ -49,6 +49,7 @@ typedef struct dataset
     size_t cnt_connections = 0;
     connection *connections;
 
+    bool full_data = false;
 } dataset;
 
 
