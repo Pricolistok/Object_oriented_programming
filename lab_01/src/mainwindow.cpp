@@ -10,22 +10,47 @@
 using namespace std;
 
 
+void MainWindow::work_with_errors(int error_code)
+{
+    switch (error_code)
+    {
+        case ERROR_OPEN_FILE:
+            display_error_message("Ошибка при открытии файла!");
+            exit(ERROR_OPEN_FILE);
+        case ERROR_LEN_DATA:
+            display_error_message("Ошибка при считывании длины!");
+            exit(ERROR_LEN_DATA);
+        case ERROR_VALUE_IN_FILE:
+            display_error_message("Ошибка при данных из файла!");
+            exit(ERROR_VALUE_IN_FILE);
+        case ERROR_ADD_MEMORY:
+            display_error_message("Ошибка при выделении данных!");
+            exit(ERROR_ADD_MEMORY);
+        case OK:
+            drawWidget->update();
+            break;
+    }
+}
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    params param;
+    int error_code;
+    params_t param;
     ui->setupUi(this);
     ui->widget->setStyleSheet("background-color:black;");
     drawWidget = new MyDrawWidget(ui->widget);
     drawWidget->setGeometry(0, 0, ui->widget->width(), ui->widget->height());
     drawWidget->show();
-    drawWidget->update();
     connect(ui->pushButton_transfer, &QPushButton::clicked, this, &MainWindow::read_data_from_transfer);
     connect(ui->pushButton_scale, &QPushButton::clicked, this, &MainWindow::read_data_from_scale);
     connect(ui->pushButton_rotate, &QPushButton::clicked, this, &MainWindow::read_data_from_rotate);
     connect(ui->pushButton_restart, &QPushButton::clicked, this, &MainWindow::restart_picture);
-    transform_data(drawWidget->data, param, DRAW);
+    error_code = transform_data(drawWidget->data, param, DRAW);
+    work_with_errors(error_code);
+    drawWidget->update();
 }
 
 
@@ -66,10 +91,10 @@ void MainWindow::read_data_from_transfer()
 
 void MainWindow::restart_picture()
 {
-    params param;
+    params_t param;
     drawWidget->data.full_data = false;
-    free(drawWidget->data.points);
-    free(drawWidget->data.connections);
+    free(drawWidget->data.dataPoints.points);
+    free(drawWidget->data.dataConnections.connections);
     transform_data(drawWidget->data, param, DRAW);
     drawWidget->update();
 }
@@ -148,7 +173,7 @@ void MainWindow::read_data_from_rotate()
 void MainWindow::sender_data(double data_x, double data_y, double data_z, mode_reset_data mode_reset)
 {
     int error_code = OK;
-    params data_params;
+    params_t data_params;
     switch (mode_reset)
     {
         case TRANSFER:
@@ -172,24 +197,7 @@ void MainWindow::sender_data(double data_x, double data_y, double data_z, mode_r
             break;
     }
     error_code = transform_data(drawWidget->data, data_params, mode_reset);
-    switch (error_code)
-    {
-        case ERROR_OPEN_FILE:
-            display_error_message("Ошибка при открытии файла!");
-            break;
-        case ERROR_LEN_DATA:
-            display_error_message("Ошибка при считывании длины!");
-            break;
-        case ERROR_VALUE_IN_FILE:
-            display_error_message("Ошибка при данных из файла!");
-            break;
-        case ERROR_ADD_MEMORY:
-            display_error_message("Ошибка при выделении данных!");
-            break;
-        case OK:
-            drawWidget->update();
-            break;
-    }
+    work_with_errors(error_code);
 }
 
 
@@ -200,9 +208,6 @@ void display_error_message(const char text[LEN_TEXT_ERROR_MESSAGE])
     message.setText(text);
     message.exec();
 }
-
-
-
 
 
 MainWindow::~MainWindow()

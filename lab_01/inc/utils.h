@@ -15,9 +15,9 @@ typedef enum mode_write_len
 
 
 int read_len_from_file(size_t &cnt_data, FILE *file_source);
-int read_data_connection(connection *connections, FILE *file_source, size_t cnt_connections);
-int read_data_points(point *points, FILE *file_source, size_t cnt_points);
-int read_data_from_file(dataset &data);
+int read_data_connection(connection_t *connections, FILE *file_source, size_t cnt_connections);
+int read_data_points(point_t *points, FILE *file_source, size_t cnt_points);
+int read_data_from_file(dataset_t &data);
 
 
 #endif

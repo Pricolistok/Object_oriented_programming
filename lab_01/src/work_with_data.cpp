@@ -7,7 +7,7 @@ double transformation_param_transfer(double data, double param)
 }
 
 
-void transfer_dots(point *points, size_t cnt_points, transfer_param transferParam)
+void transfer_dots(point_t *points, size_t cnt_points, transfer_param_t transferParam)
 {
     for (size_t i = 0; i < cnt_points; i++)
     {
@@ -23,7 +23,7 @@ double transformation_param_scale(double data, double param)
 }
 
 
-void scale_dots(point *points, size_t cnt_points, scale_param scaleParam)
+void scale_dots(point_t *points, size_t cnt_points, scale_param_t scaleParam)
 {
     for (size_t i = 0; i < cnt_points; i++)
     {
@@ -33,7 +33,7 @@ void scale_dots(point *points, size_t cnt_points, scale_param scaleParam)
     }
 }
 
-void transformation_param_rotate(point &data, rotate_param param)
+void transformation_param_rotate(point_t &data, rotate_param_t param)
 {
     double radX = param.angle_x * M_PI / 180;
     double radY = param.angle_y * M_PI / 180;
@@ -58,11 +58,9 @@ void transformation_param_rotate(point &data, rotate_param param)
 }
 
 
-void rotate_dots(point *points, size_t cnt_points, rotate_param rotateParam)
+void rotate_dots(point_t *points, size_t cnt_points, rotate_param_t rotateParam)
 {
     for (size_t i = 0; i < cnt_points; i++)
-    {
         transformation_param_rotate(points[i], rotateParam);
-    }
 }
 

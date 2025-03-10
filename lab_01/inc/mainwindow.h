@@ -24,6 +24,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void work_with_errors(int error_code);
     void read_data_from_transfer();
     void read_data_from_scale();
     void read_data_from_rotate();
