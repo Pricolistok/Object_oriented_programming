@@ -85,7 +85,7 @@ int read_data_from_file(dataset &data)
     size_t len_buffer = 0;
 
     FILE *file_source = fopen(FILE_SOURCE, "r");
-    if (file_source == NULL)
+    if (!file_source)
         error_code = ERROR_OPEN_FILE;
 
     if (!error_code)

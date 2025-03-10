@@ -5,6 +5,6 @@
 #include "../inc/utils.h"
 #include "../inc/consts.h"
 
-void print_all(dataset &data, params data_params, mode_reset_data mode_reset);
+int transform_data(dataset &data, params data_params, mode_reset_data mode_reset);
 
 #endif

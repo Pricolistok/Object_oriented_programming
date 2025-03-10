@@ -5,7 +5,8 @@ typedef enum mode_reset_data
 {
     TRANSFER,
     SCALE,
-    ROTATE
+    ROTATE,
+    DRAW
 } mode_reset_data;
 
 #endif

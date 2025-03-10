@@ -3,27 +3,34 @@
 
 #include <cstdlib>
 
+typedef struct transfer_param
+{
+    double dx;
+    double dy;
+    double dz;
+} transfer_param;
+
+typedef struct scale_param
+{
+    double kx;
+    double ky;
+    double kz;
+} scale_param;
+
+typedef struct rotate_param
+{
+    double angle_x;
+    double angle_y;
+    double angle_z;
+} rotate_param;
+
+
 typedef union params
 {
-    struct
-    {
-        double dx;
-        double dy;
-        double dz;
-    } transfer_param;
-    struct
-    {
-        double kx;
-        double ky;
-        double kz;
-    } scale_param;
-    struct
-    {
-        double angle_x;
-        double angle_y;
-        double angle_z;
-    } rotate_param;
-}params;
+    transfer_param transferParam;
+    scale_param scaleParam;
+    rotate_param rotateParam;
+} params;
 
 
 typedef struct point
