@@ -44,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent)
     drawWidget = new MyDrawWidget(ui->widget);
     drawWidget->setGeometry(0, 0, ui->widget->width(), ui->widget->height());
     drawWidget->show();
+    this->setWindowIcon(QIcon("img/icon.png"));
+    this->setWindowTitle("OOP lab_01 SP");
     connect(ui->pushButton_transfer, &QPushButton::clicked, this, &MainWindow::read_data_from_transfer);
     connect(ui->pushButton_scale, &QPushButton::clicked, this, &MainWindow::read_data_from_scale);
     connect(ui->pushButton_rotate, &QPushButton::clicked, this, &MainWindow::read_data_from_rotate);
