@@ -7,7 +7,6 @@
 #include "../inc/struct.h"
 
 #define LEN_TEXT_ERROR_MESSAGE 150
-#define LEN_DATA 100
 
 void display_error_message(const char text[LEN_TEXT_ERROR_MESSAGE]);
 

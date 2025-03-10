@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include "inc/process.h"
 #include "inc/errors.h"
-#include "inc/struct.h"
 #include <QMessageBox>
 #include <QString>
 #include <string>

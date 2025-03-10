@@ -1,5 +1,6 @@
 #include "../inc/process.h"
 #include "../inc/maindrawer.h"
+#include "../inc/utils.h"
 #include "../inc/work_with_data.h"
 #include "../inc/errors.h"
 #include <cstdio>
