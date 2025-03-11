@@ -21,6 +21,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    dataset data_all;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void work_with_errors(int error_code);

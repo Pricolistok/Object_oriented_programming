@@ -103,7 +103,14 @@ int transform_data(dataset_draw_t &data_paint, const params_t &data_params, cons
 {
     int error_code = OK;
 
-    dataset_t data;
+    static dataset_t data;
+
+    if (mode_reset == FREE)
+    {
+        free_points_arr(data.dataPoints);
+        free_connections_arr(data.dataConnections);
+    }
+
     if (!data_paint.full_data)
         error_code = read_data_from_file(data);
 
@@ -111,12 +118,8 @@ int transform_data(dataset_draw_t &data_paint, const params_t &data_params, cons
     {
         reset_data(data.dataPoints, data_params, mode_reset);
         error_code = translate_data_for_paint(data_paint, data);
-        if (error_code != OK)
-        {
+        if (error_code == OK)
             data_paint.full_data = true;
-            free_points_arr(data.dataPoints);
-            free_connections_arr(data.dataConnections);
-        }
     }
     return error_code;
 }

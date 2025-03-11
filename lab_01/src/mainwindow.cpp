@@ -214,5 +214,7 @@ void display_error_message(const char text[LEN_TEXT_ERROR_MESSAGE])
 
 MainWindow::~MainWindow()
 {
+    params_t data_params;
+    transform_data(drawWidget->data, data_params, FREE);
     delete ui;
 }
