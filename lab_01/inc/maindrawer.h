@@ -21,7 +21,7 @@ public:
     double get_x(size_t i);
     double get_y(size_t i);
     explicit MyDrawWidget(QWidget *parent = nullptr);
-    dataset_t data;
+    dataset_draw_t data;
 
 protected:
     void paintEvent(QPaintEvent *event) override;

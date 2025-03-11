@@ -171,7 +171,7 @@ void MainWindow::read_data_from_rotate()
 }
 
 
-void MainWindow::sender_data(double data_x, double data_y, double data_z, mode_reset_data mode_reset)
+void MainWindow::sender_data(double data_x, double data_y, double data_z, const mode_reset_data mode_reset)
 {
     int error_code = OK;
     params_t data_params;
@@ -190,6 +190,7 @@ void MainWindow::sender_data(double data_x, double data_y, double data_z, mode_r
             break;
 
         case ROTATE:
+            printf("wis %lf %lf %lf\n", data_x, data_y, data_z);
             data_params.rotateParam.angle_x = data_x;
             data_params.rotateParam.angle_y = data_y;
             data_params.rotateParam.angle_z = data_z;
