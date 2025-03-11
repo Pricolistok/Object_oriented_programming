@@ -13,10 +13,17 @@ void transfer_dot(point_t &point, const transfer_param_t &transferParam)
     point.z = transformation_param_transfer(point.z, transferParam.dz);
 }
 
-void transfer_dots(point_t *points, const size_t cnt_points, const transfer_param_t transferParam)
+int transfer_dots(point_t *points, const size_t cnt_points, const transfer_param_t transferParam)
 {
-    for (size_t i = 0; i < cnt_points; i++)
-        transfer_dot(points[i], transferParam);
+    int error_code = OK;
+    if (points)
+    {
+        for (size_t i = 0; i < cnt_points; i++)
+            transfer_dot(points[i], transferParam);
+    }
+    else
+        error_code = ERROR_ADD_MEMORY;
+    return error_code;
 }
 
 
@@ -32,10 +39,17 @@ void scale_dot(point_t &point, const scale_param &scaleParam)
     point.z = transformation_param_scale(point.z, scaleParam.kz);
 }
 
-void scale_dots(point_t *points, const size_t cnt_points, const scale_param_t scaleParam)
+int scale_dots(point_t *points, const size_t cnt_points, const scale_param_t scaleParam)
 {
-    for (size_t i = 0; i < cnt_points; i++)
-        scale_dot(points[i], scaleParam);
+    int error_code = OK;
+    if (points)
+    {
+        for (size_t i = 0; i < cnt_points; i++)
+            scale_dot(points[i], scaleParam);
+    }
+    else
+        error_code = ERROR_ADD_MEMORY;
+    return error_code;
 }
 
 void transformation_param_rotate(point_t &data, const trigonometry_data_t &trigonometry_data)
@@ -61,7 +75,6 @@ double transform_angle(const double angle)
 
 void transform_angles(angle_rad_t &angle_mod, const rotate_param_t &rotateParam)
 {
-//    printf("%lf %lf %lf\n", rotateParam.angle_x, rotateParam.angle_y, rotateParam.angle_z);
     angle_mod.radX = transform_angle(rotateParam.angle_x);
     angle_mod.radY = transform_angle(rotateParam.angle_y);
     angle_mod.radZ = transform_angle(rotateParam.angle_z);
@@ -80,13 +93,20 @@ void set_trigonometry_data(trigonometry_data_t &trigonometry_data, const angle_r
 }
 
 
-void rotate_dots(point_t *points, const size_t cnt_points, const rotate_param_t rotateParam)
+int rotate_dots(point_t *points, const size_t cnt_points, const rotate_param_t rotateParam)
 {
+    int error_code = OK;
     angle_rad_t angle_mod;
     trigonometry_data_t trigonometry_data;
-    transform_angles(angle_mod, rotateParam);
-    set_trigonometry_data(trigonometry_data, angle_mod);
-    for (size_t i = 0; i < cnt_points; i++)
-        transformation_param_rotate(points[i], trigonometry_data);
+    if (points)
+    {
+        transform_angles(angle_mod, rotateParam);
+        set_trigonometry_data(trigonometry_data, angle_mod);
+        for (size_t i = 0; i < cnt_points; i++)
+            transformation_param_rotate(points[i], trigonometry_data);
+    }
+    else
+        error_code = ERROR_ADD_MEMORY;
+    return error_code;
 }
 

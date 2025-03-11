@@ -5,8 +5,8 @@
 #include <cstdlib>
 #include "struct.h"
 
-//#define FILE_SOURCE "data/data_cube.txt"
-#define FILE_SOURCE "data/data_pyramid.txt"
+#define FILE_SOURCE "data/data_cube.txt"
+//#define FILE_SOURCE "data/data_pyramid.txt"
 
 typedef enum mode_write_len
 {

@@ -197,6 +197,8 @@ void MainWindow::sender_data(double data_x, double data_y, double data_z, const 
             break;
         case DRAW:
             break;
+        case FREE:
+            break;
     }
     error_code = transform_data(drawWidget->data, data_params, mode_reset);
     work_with_errors(error_code);

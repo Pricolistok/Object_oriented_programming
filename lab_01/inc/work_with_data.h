@@ -7,12 +7,12 @@
 #include "../inc/struct.h"
 #include "cmath"
 
-void transfer_dots(point_t *points, const size_t cnt_points, const transfer_param_t transferParam);
+int transfer_dots(point_t *points, const size_t cnt_points, const transfer_param_t transferParam);
 double transformation_param_transfer(const double data, const double param);
 double transformation_param_scale(const double data, const double param);
-void scale_dots(point_t *points, const size_t cnt_points, const scale_param_t scaleParam);
+int scale_dots(point_t *points, const size_t cnt_points, const scale_param_t scaleParam);
 void transformation_param_rotate(point_t &data, const trigonometry_data_t &trigonometry_data);
-void rotate_dots(point_t *points, const size_t cnt_points, rotate_param_t rotateParam);
+int rotate_dots(point_t *points, const size_t cnt_points, rotate_param_t rotateParam);
 void transform_angles(angle_rad_t &angle_mod, const rotate_param_t &rotateParam);
 double transform_angle(const double angle);
 void scale_dot(point_t &point, const scale_param &scaleParam);

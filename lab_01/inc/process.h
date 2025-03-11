@@ -5,7 +5,7 @@
 #include "../inc/consts.h"
 
 int transform_data(dataset_draw_t &data, const params_t &data_params, const mode_reset_data mode_reset);
-void reset_data(data_points_t &dataPoints, const params_t &data_params, const mode_reset_data mode_reset);
+int reset_data(data_points_t &dataPoints, const params_t &data_params, const mode_reset_data mode_reset);
 void translate_point(point_draw_t &point_draw, const point_t point);
 int translate_points(data_points_paint_t &data_draw, const data_points_t &data);
 int translate_connections(data_connections_t &data_draw, const data_connections_t &data);

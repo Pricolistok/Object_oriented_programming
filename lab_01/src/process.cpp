@@ -7,22 +7,26 @@
 #include <cstdlib>
 
 
-void reset_data(data_points_t &dataPoints, const params_t &data_params, const mode_reset_data mode_reset)
+int reset_data(data_points_t &dataPoints, const params_t &data_params, const mode_reset_data mode_reset)
 {
+    int error_code = OK;
     switch (mode_reset)
     {
         case TRANSFER:
-            transfer_dots(dataPoints.points, dataPoints.cnt_points, data_params.transferParam);
+            error_code = transfer_dots(dataPoints.points, dataPoints.cnt_points, data_params.transferParam);
             break;
         case SCALE:
-            scale_dots(dataPoints.points, dataPoints.cnt_points, data_params.scaleParam);
+            error_code = scale_dots(dataPoints.points, dataPoints.cnt_points, data_params.scaleParam);
             break;
         case ROTATE:
-            rotate_dots(dataPoints.points, dataPoints.cnt_points, data_params.rotateParam);
+            error_code = rotate_dots(dataPoints.points, dataPoints.cnt_points, data_params.rotateParam);
             break;
         case DRAW:
             break;
+        case FREE:
+            break;
     }
+    return error_code;
 }
 
 void translate_point(point_draw_t &point_draw, const point_t point)
@@ -116,10 +120,13 @@ int transform_data(dataset_draw_t &data_paint, const params_t &data_params, cons
 
     if (error_code == OK)
     {
-        reset_data(data.dataPoints, data_params, mode_reset);
-        error_code = translate_data_for_paint(data_paint, data);
+        error_code = reset_data(data.dataPoints, data_params, mode_reset);
         if (error_code == OK)
-            data_paint.full_data = true;
+        {
+            error_code = translate_data_for_paint(data_paint, data);
+            if (error_code == OK)
+                data_paint.full_data = true;
+        }
     }
     return error_code;
 }
