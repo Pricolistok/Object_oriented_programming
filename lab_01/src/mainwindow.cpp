@@ -96,6 +96,8 @@ void MainWindow::restart_picture()
     drawWidget->data.full_data = false;
     free(drawWidget->data.dataPoints.points);
     free(drawWidget->data.dataConnections.connections);
+    drawWidget->data.dataPoints.points = NULL;
+    drawWidget->data.dataConnections.connections = NULL;
     transform_data(drawWidget->data, param, DRAW);
     drawWidget->update();
 }

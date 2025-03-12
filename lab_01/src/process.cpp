@@ -133,7 +133,7 @@ int transform_data(dataset_draw_t &data_paint, const params_t &data_params, cons
 
     static dataset_t dataset;
 
-    if (mode_reset == FREE)
+    if (mode_reset == FREE || mode_reset == DRAW)
         free_dataset(dataset);
 
     if (!data_paint.full_data)

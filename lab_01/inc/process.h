@@ -4,8 +4,9 @@
 #include "../inc/struct.h"
 #include "../inc/consts.h"
 
-#define FILE_SOURCE "data/data_cube.txt"
-//#define FILE_SOURCE "data/data_pyramid.txt"
+//#define FILE_SOURCE "data/data_cube.txt"
+#define FILE_SOURCE "data/data_pyramid.txt"
+//#define FILE_SOURCE "data/data_cat.txt"
 
 
 int transform_data(dataset_draw_t &data, const params_t &data_params, const mode_reset_data mode_reset);

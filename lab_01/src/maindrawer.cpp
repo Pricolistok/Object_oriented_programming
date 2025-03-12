@@ -2,7 +2,10 @@
 
 MyDrawWidget::MyDrawWidget(QWidget *parent) : QWidget(parent)
 {
-
+    data.dataPoints.cnt_points = 0;
+    data.dataConnections.cnt_connections = 0;
+    data.dataPoints.points = NULL;
+    data.dataConnections.connections = NULL;
 }
 
 double MyDrawWidget::get_x(size_t i)
@@ -12,7 +15,7 @@ double MyDrawWidget::get_x(size_t i)
 
 double MyDrawWidget::get_y(size_t i)
 {
-    return data.dataPoints.points[i].y + PADDING_Y;
+    return -data.dataPoints.points[i].y + PADDING_Y;
 }
 
 void MyDrawWidget::paintEvent(QPaintEvent *event)
