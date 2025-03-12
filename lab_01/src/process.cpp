@@ -106,13 +106,10 @@ int translate_data_for_paint(dataset_draw_t &data_draw, const dataset_t &data)
     if (error_code == OK)
     {
         error_code = translate_connections(tmp.dataConnections, data.dataConnections);
-        printf("zzz%d\n", error_code);
         if (error_code != OK)
             free_points_draw(tmp.dataPoints);
         else
         {
-            printf("GHJK");
-            printf("%p", (void*)data_draw.dataPoints.points);
             free_points_draw(data_draw.dataPoints);
             free_connections_draw(data_draw.dataConnections);
             copy_tmp_points(data_draw.dataPoints, tmp.dataPoints);
@@ -142,11 +139,9 @@ int transform_data(dataset_draw_t &data_paint, const params_t &data_params, cons
     if (!data_paint.full_data)
     {
         error_code = read_dataset(dataset, FILE_SOURCE);
-        printf("%d\n", error_code);
         if (error_code == OK)
             error_code = validate_dataset(dataset);
     }
-    printf("n%d\n", error_code);
 
     if (error_code == OK)
     {
@@ -154,7 +149,6 @@ int transform_data(dataset_draw_t &data_paint, const params_t &data_params, cons
         if (error_code == OK)
         {
             error_code = translate_data_for_paint(data_paint, dataset);
-            printf("nnbbn%d\n", error_code);
             if (error_code == OK)
                 data_paint.full_data = true;
         }

@@ -52,6 +52,7 @@ int scale_dots(data_points_t &dataset_points, const scale_param_t scaleParam)
     return error_code;
 }
 
+
 void transformation_param_rotate(point_t &data, const trigonometry_data_t &trigonometry_data)
 {
     double y1 = data.y * trigonometry_data.cosX - data.z * trigonometry_data.sinX;
@@ -67,6 +68,7 @@ void transformation_param_rotate(point_t &data, const trigonometry_data_t &trigo
     data.y = y3;
     data.z = z2;
 }
+
 
 double transform_angle(const double angle)
 {

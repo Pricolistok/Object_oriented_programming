@@ -96,6 +96,8 @@ int read_connection_from_file(connection_t &connection, FILE *file_source)
     rc = fscanf(file_source, "%d %d", &connection.index_dot_1, &connection.index_dot_2);
     if (rc != 2)
         error_code = ERROR_VALUE_IN_FILE;
+    if (connection.index_dot_1 < 0 || connection.index_dot_2 < 0)
+        error_code = ERROR_VALUE_IN_FILE;
 
     return error_code;
 }
@@ -190,7 +192,9 @@ int read_dataset(dataset_t &dataset, const char *file_name)
 
 int validate_connection(const connection_t &connection, const size_t cnt_points)
 {
-    return OK;
+    if (connection.index_dot_1 < cnt_points && connection.index_dot_2 < cnt_points)
+        return OK;
+    return ERROR_VALUE_IN_FILE;
 }
 
 int validate_connections(const connection_t *connections, const size_t cnt_points)
@@ -204,11 +208,9 @@ int validate_connections(const connection_t *connections, const size_t cnt_point
         while (error_code == OK && iter < cnt_points)
         {
             error_code = validate_connection(connections[iter], cnt_points);
-            printf("%d\n", error_code);
             iter++;
         }
     }
-    printf("%d\n", error_code);
     return error_code;
 }
 

@@ -59,7 +59,7 @@ typedef struct data_points
 typedef struct data_connections
 {
     size_t cnt_connections = 0;
-    connection *connections;
+    connection *connections = NULL;
 } data_connections_t;
 
 
@@ -99,7 +99,7 @@ typedef struct point_draw
 typedef struct data_points_draw
 {
     size_t cnt_points;
-    point_draw_t *points;
+    point_draw_t *points = NULL;
 } data_points_draw_t;
 
 
