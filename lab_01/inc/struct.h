@@ -100,7 +100,7 @@ typedef struct data_points_draw
 {
     size_t cnt_points;
     point_draw_t *points;
-} data_points_paint_t;
+} data_points_draw_t;
 
 
 typedef struct dataset_draw

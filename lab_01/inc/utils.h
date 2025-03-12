@@ -5,22 +5,28 @@
 #include <cstdlib>
 #include "struct.h"
 
-#define FILE_SOURCE "data/data_cube.txt"
-//#define FILE_SOURCE "data/data_pyramid.txt"
-
-typedef enum mode_write_len
-{
-    CNT_POINTS,
-    CNT_CONNECTIONS
-} mode_write_len;
-
 
 int read_len_from_file(size_t &cnt_data, FILE *file_source);
-int read_data_connection(connection_t *connections, FILE *file_source, const size_t cnt_connections);
-int read_data_points(point_t *points, FILE *file_source, const size_t cnt_points);
-int read_data_from_file(dataset_t &data);
-int work_with_arr_points(data_points_t &data, FILE *file_source);
-int work_with_connections(data_connections_t &data, FILE *file_source);
+
+int read_connection_from_file(connection_t &connection, FILE *file_source);
+int read_array_connections(connection_t *connections, FILE *file_source, const size_t cnt_connections);
+int read_connections(connection_t *&connections, FILE *file_source, const size_t cnt_connections);
+int read_dataset_connections(data_connections_t &data_connections, FILE *file_source);
+
+int read_point_from_file(point_t &point, FILE *file_source);
+int read_array_points(point_t *points, FILE *file_source, const size_t cnt_points);
+int read_points(point_t *&points, FILE *file_source, const size_t cnt_points);
+int read_dataset_points(data_points_t &data, FILE *file_source);
+
+int read_dataset_from_file(data_points_t &dataPoints, data_connections_t &dataConnections, FILE *file_source);
+int read_dataset(dataset_t &dataset, const char *file_name);
+
+
+int validate_connection(const connection_t &connection, const size_t cnt_points);
+int validate_connections(const connection_t *connections, const size_t cnt_points);
+int validate_dataset_connections(const data_connections_t dataset, const size_t cnt_points);
+void copy_cnt_points(size_t &cnt_points, const data_points_t &dataset);
+int validate_dataset(const dataset_t &dataset);
 
 
 #endif
