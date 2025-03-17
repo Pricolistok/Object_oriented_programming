@@ -168,6 +168,8 @@ int read_dataset_from_file(data_points_t &dataPoints, data_connections_t &dataCo
         error_code = read_dataset_points(dataPoints, file_source);
         if (error_code == OK)
             error_code = read_dataset_connections(dataConnections, file_source);
+            if (error_code != OK)
+                free_points_arr(dataPoints);
     }
 
     return error_code;
@@ -230,4 +232,31 @@ int validate_dataset(const dataset_t &dataset)
     size_t cnt_points;
     copy_cnt_points(cnt_points, dataset.dataPoints);
     return validate_dataset_connections(dataset.dataConnections, cnt_points);
+}
+
+
+void free_points_arr(const data_points_t &data)
+{
+    free(data.points);
+}
+
+void free_connections_arr(const data_connections_t &data)
+{
+    free(data.connections);
+}
+
+void free_points_draw(data_points_draw_t &dataset)
+{
+    free(dataset.points);
+}
+
+void free_connections_draw(data_connections_t &dataset)
+{
+    free(dataset.connections);
+}
+
+void free_dataset(dataset_t &dataset)
+{
+    free_points_arr(dataset.dataPoints);
+    free_connections_arr(dataset.dataConnections);
 }

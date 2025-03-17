@@ -21,33 +21,29 @@ int mode_transform_data(dataset_t &dataset, const params_t &data_params, const m
             break;
         case REDRAW:
             free_dataset(dataset);
-            error_code = read_dataset(dataset, FILE_SOURCE);
-            if (error_code == OK)
-                error_code = validate_dataset(dataset);
+            error_code = work_with_file(dataset, FILE_SOURCE);
             break;
         case LOAD:
-            error_code = read_dataset(dataset, FILE_SOURCE);
-            if (error_code == OK)
-                error_code = validate_dataset(dataset);
+            error_code = work_with_file(dataset, FILE_SOURCE);
             break;
 
     }
     return error_code;
 }
 
-int transform_data(dataset_draw_t &data_paint, const params_t &data_params, const mode_reset_data mode_reset)
+int transform_data(dataset_draw_t &data_paint, const params_t &data_params, const mode_reset_data mode_transform)
 {
     int error_code = OK;
 
     static dataset_t dataset;
 
-    if (mode_reset == FREE)
+    if (mode_transform == FREE)
     {
         free_dataset(dataset);
         return error_code;
     }
 
-    error_code = mode_transform_data(dataset, data_params, mode_reset);
+    error_code = mode_transform_data(dataset, data_params, mode_transform);
 
     if (error_code == OK)
         error_code = translate_data_for_paint(data_paint, dataset);

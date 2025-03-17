@@ -28,5 +28,11 @@ int validate_dataset_connections(const data_connections_t dataset, const size_t 
 void copy_cnt_points(size_t &cnt_points, const data_points_t &dataset);
 int validate_dataset(const dataset_t &dataset);
 
+void free_points_arr(const data_points_t &data);
+void free_connections_arr(const data_connections_t &data);
+void free_points_draw(data_points_draw_t &dataset);
+void free_connections_draw(data_connections_t &dataset);
+void free_dataset(dataset_t &dataset);
+
 
 #endif

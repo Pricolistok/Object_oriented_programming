@@ -44,25 +44,6 @@ int translate_connections(data_connections_t &data_draw, const data_connections_
     return error_code;
 }
 
-void free_points_arr(const data_points_t &data)
-{
-    free(data.points);
-}
-
-void free_connections_arr(const data_connections_t &data)
-{
-    free(data.connections);
-}
-
-void free_points_draw(data_points_draw_t &dataset)
-{
-    free(dataset.points);
-}
-
-void free_connections_draw(data_connections_t &dataset)
-{
-    free(dataset.connections);
-}
 
 void copy_tmp_points(data_points_draw_t &data_draw, const data_points_draw_t &tmp)
 {
@@ -73,7 +54,6 @@ void copy_tmp_connections(data_connections_t &data_draw, const data_connections_
 {
     data_draw = tmp;
 }
-
 
 
 int translate_data_for_paint(dataset_draw_t &data_draw, const dataset_t &data)
@@ -97,8 +77,10 @@ int translate_data_for_paint(dataset_draw_t &data_draw, const dataset_t &data)
     return error_code;
 }
 
-void free_dataset(dataset_t &dataset)
+int work_with_file(dataset_t &dataset, const char *filename)
 {
-    free_points_arr(dataset.dataPoints);
-    free_connections_arr(dataset.dataConnections);
+    int error_code = read_dataset(dataset, filename);
+    if (error_code == OK)
+        error_code = validate_dataset(dataset);
+    return error_code;
 }
