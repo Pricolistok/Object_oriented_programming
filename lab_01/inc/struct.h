@@ -107,7 +107,6 @@ typedef struct dataset_draw
 {
     data_points_draw dataPoints;
     data_connections_t dataConnections;
-    bool full_data = false;
 } dataset_draw_t;
 
 #endif

@@ -16,7 +16,8 @@ SOURCES += \
     src/process.cpp \
     src/work_with_data.cpp \
     src/utils.cpp \
-    src/maindrawer.cpp
+    src/maindrawer.cpp \
+    src/main_func.cpp
 
 HEADERS += \
     inc/mainwindow.h \
@@ -25,7 +26,8 @@ HEADERS += \
     inc/errors.h \
     inc/work_with_data.h \
     inc/utils.h \
-    inc/maindrawer.h
+    inc/maindrawer.h \
+    inc/main_func.h
 
 
 FORMS += \

@@ -6,8 +6,9 @@ typedef enum mode_reset_data
     TRANSFER,
     SCALE,
     ROTATE,
-    DRAW,
-    FREE
+    REDRAW,
+    FREE,
+    LOAD
 } mode_reset_data;
 
 #endif

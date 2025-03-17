@@ -9,7 +9,7 @@ double transformation_param_transfer(const double data, const double param)
 void transfer_dot(point_t &point, const transfer_param_t &transferParam)
 {
     point.x = transformation_param_transfer(point.x, transferParam.dx);
-    point.y = transformation_param_transfer(point.y, -transferParam.dy);
+    point.y = transformation_param_transfer(point.y, transferParam.dy);
     point.z = transformation_param_transfer(point.z, transferParam.dz);
 }
 

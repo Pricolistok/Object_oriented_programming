@@ -7,28 +7,6 @@
 #include <cstdlib>
 
 
-int reset_data(dataset_t &dataset, const params_t &data_params, const mode_reset_data mode_reset)
-{
-    int error_code = OK;
-    switch (mode_reset)
-    {
-        case TRANSFER:
-            error_code = transfer_dots(dataset.dataPoints, data_params.transferParam);
-            break;
-        case SCALE:
-            error_code = scale_dots(dataset.dataPoints, data_params.scaleParam);
-            break;
-        case ROTATE:
-            error_code = rotate_dots(dataset.dataPoints, data_params.rotateParam);
-            break;
-        case DRAW:
-            break;
-        case FREE:
-            break;
-    }
-    return error_code;
-}
-
 void translate_point(point_draw_t &point_draw, const point_t point)
 {
     point_draw.x = point.x;
@@ -123,35 +101,4 @@ void free_dataset(dataset_t &dataset)
 {
     free_points_arr(dataset.dataPoints);
     free_connections_arr(dataset.dataConnections);
-}
-
-
-
-int transform_data(dataset_draw_t &data_paint, const params_t &data_params, const mode_reset_data mode_reset)
-{
-    int error_code = OK;
-
-    static dataset_t dataset;
-
-    if (mode_reset == FREE || mode_reset == DRAW)
-        free_dataset(dataset);
-
-    if (!data_paint.full_data)
-    {
-        error_code = read_dataset(dataset, FILE_SOURCE);
-        if (error_code == OK)
-            error_code = validate_dataset(dataset);
-    }
-
-    if (error_code == OK)
-    {
-        error_code = reset_data(dataset, data_params, mode_reset);
-        if (error_code == OK)
-        {
-            error_code = translate_data_for_paint(data_paint, dataset);
-            if (error_code == OK)
-                data_paint.full_data = true;
-        }
-    }
-    return error_code;
 }

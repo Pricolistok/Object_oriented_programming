@@ -1,6 +1,6 @@
 #include "inc/mainwindow.h"
 #include "ui_mainwindow.h"
-#include "inc/process.h"
+#include "inc/main_func.h"
 #include "inc/errors.h"
 #include <QMessageBox>
 #include <QString>
@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->pushButton_scale, &QPushButton::clicked, this, &MainWindow::read_data_from_scale);
     connect(ui->pushButton_rotate, &QPushButton::clicked, this, &MainWindow::read_data_from_rotate);
     connect(ui->pushButton_restart, &QPushButton::clicked, this, &MainWindow::restart_picture);
-    error_code = transform_data(drawWidget->data, param, DRAW);
+    error_code = transform_data(drawWidget->data, param, LOAD);
     work_with_errors(error_code);
     drawWidget->update();
 }
@@ -93,12 +93,11 @@ void MainWindow::read_data_from_transfer()
 void MainWindow::restart_picture()
 {
     params_t param;
-    drawWidget->data.full_data = false;
     free(drawWidget->data.dataPoints.points);
     free(drawWidget->data.dataConnections.connections);
     drawWidget->data.dataPoints.points = NULL;
     drawWidget->data.dataConnections.connections = NULL;
-    transform_data(drawWidget->data, param, DRAW);
+    transform_data(drawWidget->data, param, REDRAW);
     drawWidget->update();
 }
 
@@ -192,12 +191,11 @@ void MainWindow::sender_data(double data_x, double data_y, double data_z, const 
             break;
 
         case ROTATE:
-            printf("wis %lf %lf %lf\n", data_x, data_y, data_z);
             data_params.rotateParam.angle_x = data_x;
             data_params.rotateParam.angle_y = data_y;
             data_params.rotateParam.angle_z = data_z;
             break;
-        case DRAW:
+        case REDRAW:
             break;
         case FREE:
             break;
