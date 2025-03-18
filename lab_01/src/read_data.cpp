@@ -76,16 +76,16 @@ int read_points(point_t *&points, FILE *file_source, const size_t cnt_points)
     return error_code;
 }
 
-int read_dataset_points(data_points_t &data, FILE *file_source)
+int read_dataset_points(data_points_t &dataPoints, FILE *file_source)
 {
     int error_code = OK;
     if (!file_source)
         error_code = ERROR_OPEN_FILE;
     else
     {
-        error_code = read_len_from_file(data.cnt_points, file_source);
+        error_code = read_len_from_file(dataPoints.cnt_points, file_source);
         if (error_code == OK)
-            error_code = read_points(data.points, file_source, data.cnt_points);
+            error_code = read_points(dataPoints.points, file_source, dataPoints.cnt_points);
     }
     return error_code;
 }
@@ -164,6 +164,7 @@ int read_dataset_connections(data_connections_t &data_connections, FILE *file_so
     return error_code;
 }
 
+
 int read_dataset_from_file(data_points_t &dataPoints, data_connections_t &dataConnections, FILE *file_source)
 {
     int error_code = OK;
@@ -173,13 +174,16 @@ int read_dataset_from_file(data_points_t &dataPoints, data_connections_t &dataCo
     {
         error_code = read_dataset_points(dataPoints, file_source);
         if (error_code == OK)
+        {
             error_code = read_dataset_connections(dataConnections, file_source);
             if (error_code != OK)
                 free_points_arr(dataPoints);
+        }
     }
 
     return error_code;
 }
+
 
 int read_dataset(dataset_t &dataset, const char *file_name)
 {

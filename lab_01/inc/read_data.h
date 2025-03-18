@@ -16,7 +16,7 @@ int read_dataset_connections(data_connections_t &data_connections, FILE *file_so
 int read_point_from_file(point_t &point, FILE *file_source);
 int read_array_points(point_t *points, FILE *file_source, const size_t cnt_points);
 int read_points(point_t *&points, FILE *file_source, const size_t cnt_points);
-int read_dataset_points(data_points_t &data, FILE *file_source);
+int read_dataset_points(data_points_t &dataPoints, FILE *file_source);
 
 int read_dataset_from_file(data_points_t &dataPoints, data_connections_t &dataConnections, FILE *file_source);
 int read_dataset(dataset_t &dataset, const char *file_name);

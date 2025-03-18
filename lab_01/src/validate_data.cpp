@@ -32,9 +32,9 @@ int validate_dataset_connections(const data_connections_t dataset, const size_t 
 }
 
 
-void copy_cnt_points(size_t &cnt_points, const data_points_t &dataset)
+void copy_cnt_points(size_t &cnt_points, const data_points_t &datasetPoints)
 {
-    cnt_points = dataset.cnt_points;
+    cnt_points = datasetPoints.cnt_points;
 }
 
 int validate_dataset(const dataset_t &dataset)

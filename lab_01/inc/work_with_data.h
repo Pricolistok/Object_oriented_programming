@@ -7,7 +7,7 @@
 #include "../inc/struct.h"
 #include "cmath"
 
-int transfer_dots(data_points_t &data_set_points, const transfer_param_t transferParam);
+int transfer_dots(data_points_t &dataset_points, const transfer_param_t transferParam);
 double transformation_param_transfer(const double data, const double param);
 double transformation_param_scale(const double data, const double param);
 int scale_dots(data_points_t &dataset_points, const scale_param_t scaleParam);

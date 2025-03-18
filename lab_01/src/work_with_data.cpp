@@ -13,15 +13,15 @@ void transfer_dot(point_t &point, const transfer_param_t &transferParam)
     point.z = transformation_param_transfer(point.z, transferParam.dz);
 }
 
-int transfer_dots(data_points_t &data_set_points, const transfer_param_t transferParam)
+int transfer_dots(data_points_t &dataset_points, const transfer_param_t transferParam)
 {
     int error_code = OK;
-    if (!data_set_points.points)
+    if (!dataset_points.points)
         error_code = ERROR_ADD_MEMORY;
     else
     {
-        for (size_t i = 0; i < data_set_points.cnt_points; i++)
-            transfer_dot(data_set_points.points[i], transferParam);
+        for (size_t i = 0; i < dataset_points.cnt_points; i++)
+            transfer_dot(dataset_points.points[i], transferParam);
     }
     return error_code;
 }
