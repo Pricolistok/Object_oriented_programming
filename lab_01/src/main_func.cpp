@@ -5,10 +5,10 @@
 #include <cstdio>
 #include <cstdlib>
 
-int mode_transform_data(dataset_t &dataset, const params_t &data_params, const mode_reset_data mode_transform)
+int mode_transform_data(dataset_t &dataset, const params_t &data_params, const command_t command)
 {
     int error_code = OK;
-    switch (mode_transform)
+    switch (command)
     {
         case TRANSFER:
             error_code = transfer_dots(dataset.dataPoints, data_params.transferParam);
@@ -31,22 +31,23 @@ int mode_transform_data(dataset_t &dataset, const params_t &data_params, const m
     return error_code;
 }
 
-int transform_data(dataset_draw_t &data_paint, const params_t &data_params, const mode_reset_data mode_transform)
+int transform_data(dataset_draw_t &data_paint, const params_t &data_params, const command_t command)
 {
     int error_code = OK;
 
     static dataset_t dataset;
 
-    if (mode_transform == FREE)
+    if (command == FREE)
     {
         free_dataset(dataset);
+        free_dataset_draw(data_paint);
         return error_code;
     }
 
-    error_code = mode_transform_data(dataset, data_params, mode_transform);
+    error_code = mode_transform_data(dataset, data_params, command);
 
     if (error_code == OK)
-        error_code = translate_data_for_paint(data_paint, dataset);
+        error_code = transform_data_for_paint(data_paint, dataset);
 
     return error_code;
 }

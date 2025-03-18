@@ -172,7 +172,7 @@ void MainWindow::read_data_from_rotate()
 }
 
 
-void MainWindow::sender_data(double data_x, double data_y, double data_z, const mode_reset_data mode_reset)
+void MainWindow::sender_data(double data_x, double data_y, double data_z, const command mode_reset)
 {
     int error_code = OK;
     params_t data_params;

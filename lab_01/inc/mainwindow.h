@@ -29,7 +29,7 @@ public:
     void read_data_from_scale();
     void read_data_from_rotate();
     void restart_picture();
-    void sender_data(double data_x, double data_y, double data_z, mode_reset_data mode_reset);
+    void sender_data(double data_x, double data_y, double data_z, command mode_reset);
 
 private:
     Ui::MainWindow *ui;

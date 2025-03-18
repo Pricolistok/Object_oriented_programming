@@ -17,7 +17,9 @@ SOURCES += \
     src/work_with_data.cpp \
     src/utils.cpp \
     src/maindrawer.cpp \
-    src/main_func.cpp
+    src/main_func.cpp \
+    src/read_data.cpp \
+    src/validate_data.cpp
 
 HEADERS += \
     inc/mainwindow.h \
@@ -27,7 +29,9 @@ HEADERS += \
     inc/work_with_data.h \
     inc/utils.h \
     inc/maindrawer.h \
-    inc/main_func.h
+    inc/main_func.h \
+    inc/read_data.h \
+    inc/validate_data.h
 
 
 FORMS += \
