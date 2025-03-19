@@ -6,9 +6,10 @@ typedef enum command
     TRANSFER,
     SCALE,
     ROTATE,
-    REDRAW,
+    RELOAD,
     FREE,
-    LOAD
+    LOAD,
+    DRAW
 } command_t;
 
 #endif

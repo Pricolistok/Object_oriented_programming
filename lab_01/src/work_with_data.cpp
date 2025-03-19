@@ -26,6 +26,11 @@ int transfer_dots(data_points_t &dataset_points, const transfer_param_t transfer
     return error_code;
 }
 
+int transfer_dataset(dataset_t &dataset, const transfer_param_t transferParam)
+{
+    return transfer_dots(dataset.dataPoints, transferParam);
+}
+
 
 double transformation_param_scale(const double data, const double param)
 {
@@ -50,6 +55,11 @@ int scale_dots(data_points_t &dataset_points, const scale_param_t scaleParam)
             scale_dot(dataset_points.points[i], scaleParam);
     }
     return error_code;
+}
+
+int scale_dataset(dataset_t &dataset, const scale_param_t scaleParam)
+{
+    return scale_dots(dataset.dataPoints, scaleParam);
 }
 
 
@@ -110,5 +120,10 @@ int rotate_dots(data_points_t &dataset_points, const rotate_param_t rotateParam)
             transformation_param_rotate(dataset_points.points[i], trigonometry_data);
     }
     return error_code;
+}
+
+int rotate_dataset(dataset_t &dataset, const rotate_param_t rotateParam)
+{
+    return rotate_dots(dataset.dataPoints, rotateParam);
 }
 

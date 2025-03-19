@@ -30,7 +30,7 @@ int transform_points_for_draw(data_points_draw_t &data_draw, const data_points_t
     return error_code;
 }
 
-int copy_connection(connection_t &data_tmp, connection_t &data_source, size_t cnt_dots)
+int copy_connection(connection_t &data_tmp, connection_t &data_source, int cnt_dots)
 {
     int error_code = OK;
     if (data_source.index_dot_1 < cnt_dots && data_source.index_dot_2 < cnt_dots && data_source.index_dot_1 >= 0 && data_source.index_dot_2 >= 0)
@@ -100,5 +100,25 @@ int work_with_file(dataset_t &dataset, const char *filename)
     if (error_code == OK)
         error_code = validate_dataset(dataset);
     return error_code;
+}
+
+void init_points(data_points_t &dataPoints)
+{
+    dataPoints.cnt_points = 0;
+    dataPoints.points = NULL;
+}
+
+void init_connections(data_connections_t &dataConnections)
+{
+    dataConnections.cnt_connections = 0;
+    dataConnections.connections = NULL;
+}
+
+dataset_t init_dataset()
+{
+    dataset_t dataset;
+    init_points(dataset.dataPoints);
+    init_connections(dataset.dataConnections);
+    return dataset;
 }
 

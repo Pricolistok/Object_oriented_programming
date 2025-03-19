@@ -37,7 +37,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     int error_code;
-    params_t param;
+    request_t request;
+    request.command = RELOAD;
+    request.filename = FILE_SOURCE;
     ui->setupUi(this);
     ui->widget->setStyleSheet("background-color:black;");
     drawWidget = new MyDrawWidget(ui->widget);
@@ -45,11 +47,16 @@ MainWindow::MainWindow(QWidget *parent)
     drawWidget->show();
     this->setWindowIcon(QIcon("img/icon.png"));
     this->setWindowTitle("OOP lab_01 SP");
+    drawWidget->data.dataPoints.points = NULL;
+    drawWidget->data.dataConnections.connections = NULL;
     connect(ui->pushButton_transfer, &QPushButton::clicked, this, &MainWindow::read_data_from_transfer);
     connect(ui->pushButton_scale, &QPushButton::clicked, this, &MainWindow::read_data_from_scale);
     connect(ui->pushButton_rotate, &QPushButton::clicked, this, &MainWindow::read_data_from_rotate);
     connect(ui->pushButton_restart, &QPushButton::clicked, this, &MainWindow::restart_picture);
-    error_code = transform_data(drawWidget->data, param, LOAD);
+    error_code = transform_data(drawWidget->data, request);
+    work_with_errors(error_code);
+    request.command = DRAW;
+    error_code = transform_data(drawWidget->data, request);
     work_with_errors(error_code);
     drawWidget->update();
 }
@@ -92,12 +99,19 @@ void MainWindow::read_data_from_transfer()
 
 void MainWindow::restart_picture()
 {
-    params_t param;
+    request_t request;
+    int error_code = OK;
+    request.filename = FILE_SOURCE;
     free(drawWidget->data.dataPoints.points);
     free(drawWidget->data.dataConnections.connections);
+    request.command = RELOAD;
     drawWidget->data.dataPoints.points = NULL;
     drawWidget->data.dataConnections.connections = NULL;
-    transform_data(drawWidget->data, param, REDRAW);
+    error_code = transform_data(drawWidget->data, request);
+    work_with_errors(error_code);
+    request.command = DRAW;
+    error_code = transform_data(drawWidget->data, request);
+    work_with_errors(error_code);
     drawWidget->update();
 }
 
@@ -175,32 +189,37 @@ void MainWindow::read_data_from_rotate()
 void MainWindow::sender_data(double data_x, double data_y, double data_z, const command mode_reset)
 {
     int error_code = OK;
-    params_t data_params;
+    request_t request;
+    request.filename = FILE_SOURCE;
     switch (mode_reset)
     {
         case TRANSFER:
-            data_params.transferParam.dx = data_x;
-            data_params.transferParam.dy = data_y;
-            data_params.transferParam.dz = data_z;
+            request.transferParam.dx = data_x;
+            request.transferParam.dy = data_y;
+            request.transferParam.dz = data_z;
+            request.command = TRANSFER;
             break;
 
         case SCALE:
-            data_params.scaleParam.kx = data_x;
-            data_params.scaleParam.ky = data_y;
-            data_params.scaleParam.kz = data_z;
+            request.scaleParam.kx = data_x;
+            request.scaleParam.ky = data_y;
+            request.scaleParam.kz = data_z;
+            request.command = SCALE;
             break;
 
         case ROTATE:
-            data_params.rotateParam.angle_x = data_x;
-            data_params.rotateParam.angle_y = data_y;
-            data_params.rotateParam.angle_z = data_z;
+            request.rotateParam.angle_x = data_x;
+            request.rotateParam.angle_y = data_y;
+            request.rotateParam.angle_z = data_z;
+            request.command = ROTATE;
             break;
-        case REDRAW:
-            break;
-        case FREE:
+        default:
             break;
     }
-    error_code = transform_data(drawWidget->data, data_params, mode_reset);
+    error_code = transform_data(drawWidget->data, request);
+    work_with_errors(error_code);
+    request.command = DRAW;
+    error_code = transform_data(drawWidget->data, request);
     work_with_errors(error_code);
 }
 
@@ -216,7 +235,8 @@ void display_error_message(const char text[LEN_TEXT_ERROR_MESSAGE])
 
 MainWindow::~MainWindow()
 {
-    params_t data_params;
-    transform_data(drawWidget->data, data_params, FREE);
+    request_t request;
+    request.command = FREE;
+    transform_data(drawWidget->data, request);
     delete ui;
 }

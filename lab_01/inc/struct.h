@@ -2,6 +2,7 @@
 #define LAB_01_STRUCT_H__
 
 #include <cstdlib>
+#include "consts.h"
 
 
 typedef struct transfer_param
@@ -34,6 +35,19 @@ typedef union params
     scale_param_t scaleParam;
     rotate_param_t rotateParam;
 } params_t;
+
+
+typedef struct request
+{
+    union
+    {
+        const char *filename;
+        transfer_param_t transferParam;
+        scale_param_t scaleParam;
+        rotate_param_t rotateParam;
+    };
+    command_t command;
+} request_t;
 
 
 typedef struct point

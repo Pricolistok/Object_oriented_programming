@@ -17,6 +17,10 @@ void transform_angles(angle_rad_t &angle_mod, const rotate_param_t &rotateParam)
 double transform_angle(const double angle);
 void scale_dot(point_t &point, const scale_param &scaleParam);
 void transfer_dot(point_t &point, const transfer_param_t &transferParam);
+int transfer_dataset(dataset_t &dataset, const transfer_param_t transferParam);
+int rotate_dataset(dataset_t &dataset, const rotate_param_t rotateParam);
+int scale_dataset(dataset_t &dataset, const scale_param_t scaleParam);
+
 
 
 #endif
