@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include "struct.h"
 
-void free_dataset_points_arr(data_points_t &data);
+void free_dataset_points(data_points_t &data);
 void free_dataset_connections(data_connections_t &data);
 void free_dataset_points_projection(data_points_projection_t &data_projection);
 void free_dataset(dataset_t &dataset);

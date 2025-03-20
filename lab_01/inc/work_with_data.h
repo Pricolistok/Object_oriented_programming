@@ -11,7 +11,7 @@ int move_dots(data_points_t &dataset_points, const transfer_param_t &transferPar
 double transformation_param_transfer(const double data, const double param);
 double transformation_param_scale(const double data, const double param);
 int scale_dots(data_points_t &dataset_points, const scale_param_t &scaleParam);
-void transformation_param_rotate(point_t &data, const trigonometry_dataset_t &trigonometry_data);
+void transformation_param_rotate(point_t &point, const trigonometry_dataset_t &trigonometry_data);
 int rotate_dots(data_points_t &dataset_points, const rotate_param_t &rotateParam);
 void transform_angles(angle_rad_t &angle_mod, const rotate_param_t &rotateParam);
 double transform_angle(const double angle);
@@ -22,6 +22,7 @@ void move_dot(point_t &point, const transfer_param_t &transferParam);
 int move_dataset(dataset_t &dataset, const transfer_param_t &transferParam);
 int rotate_dataset(dataset_t &dataset, const rotate_param_t &rotateParam);
 int scale_dataset(dataset_t &dataset, const scale_param_t &scaleParam);
+int rotate_array_dots(data_points_t &dataset_points, const rotate_param_t &rotateParam);
 
 
 #endif

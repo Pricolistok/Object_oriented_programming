@@ -1,24 +1,40 @@
 #include "../inc/utils.h"
 
 
-void free_dataset_points_arr(data_points_t &data)
+void free_points_array(point_t *points)
 {
-    free(data.points);
+    free(points);
+}
+
+void free_points_projection_array(point_projection_t *points)
+{
+    free(points);
+}
+
+void free_connections_array(connection_t *connections)
+{
+    free(connections);
+}
+
+
+void free_dataset_points(data_points_t &data)
+{
+    free_points_array(data.points);
 }
 
 void free_dataset_connections(data_connections_t &data)
 {
-    free(data.connections);
+    free_connections_array(data.connections);
 }
 
 void free_dataset_points_projection(data_points_projection_t &data_projection)
 {
-    free(data_projection.points);
+    free_points_projection_array(data_projection.points);
 }
 
 void free_dataset(dataset_t &dataset)
 {
-    free_dataset_points_arr(dataset.dataPoints);
+    free_dataset_points(dataset.dataPoints);
     free_dataset_connections(dataset.dataConnections);
 }
 
@@ -47,19 +63,4 @@ point_projection_t *add_memory_for_point_projection(size_t cnt_points)
     if (cnt_points <= 0)
         return NULL;
     return (point_projection_t *)malloc(sizeof(point_projection_t) * cnt_points);
-}
-
-void free_points_array(point_t *points)
-{
-    free(points);
-}
-
-void free_points_projection_array(point_projection_t *points)
-{
-    free(points);
-}
-
-void free_connections_array(connection_t *connections)
-{
-    free(connections);
 }

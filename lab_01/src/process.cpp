@@ -15,6 +15,23 @@ void transform_point_to_projection(point_projection_t &point_draw, const point_t
     point_draw.y = point_source.y;
 }
 
+int transform_points_array_to_projection(data_points_projection_t &data_projection, const data_points_t &data_source)
+{
+    int error_code = OK;
+
+    if (!data_projection.points || !data_source.points)
+        error_code = ERROR_ADD_MEMORY;
+    else if (data_projection.cnt_points <= 0 || data_source.cnt_points <= 0)
+        error_code = ERROR_LEN_DATA;
+    if (error_code != OK)
+        return error_code;
+
+    for (size_t i = 0; i < data_source.cnt_points; i++)
+        transform_point_to_projection(data_projection.points[i], data_source.points[i]);
+
+    return error_code;
+}
+
 int transform_points_to_projection(data_points_projection_t &data_projection, const data_points_t &data_source)
 {
     int error_code = OK;
@@ -24,8 +41,7 @@ int transform_points_to_projection(data_points_projection_t &data_projection, co
     else
     {
         data_projection.cnt_points = data_source.cnt_points;
-        for (size_t i = 0; i < data_source.cnt_points; i++)
-            transform_point_to_projection(data_projection.points[i], data_source.points[i]);
+        error_code = transform_points_array_to_projection(data_projection, data_source);
     }
     return error_code;
 }
@@ -72,7 +88,15 @@ void copy_tmp_connections(data_connections_t &data_connections_draw, const data_
     data_connections_draw = tmp_data_connections;
 }
 
-int transform_data_to_projection(dataset_projection_t &data_draw, const dataset_t &data_source)
+
+void copy_dataset_projection(dataset_projection_t &data_projection, const dataset_projection_t &source)
+{
+    copy_tmp_points(data_projection.dataPoints, source.dataPoints);
+    copy_tmp_connections(data_projection.dataConnections, source.dataConnections);
+}
+
+
+int transform_data_to_projection(dataset_projection_t &data_projection, const dataset_t &data_source)
 {
     int error_code = OK;
     dataset_projection_t tmp;
@@ -85,10 +109,8 @@ int transform_data_to_projection(dataset_projection_t &data_draw, const dataset_
             free_dataset_points_projection(tmp.dataPoints);
         else
         {
-            free_dataset_points_projection(data_draw.dataPoints);
-            free_dataset_connections(data_draw.dataConnections);
-            copy_tmp_points(data_draw.dataPoints, tmp.dataPoints);
-            copy_tmp_connections(data_draw.dataConnections, tmp.dataConnections);
+            free_dataset_projection(data_projection);
+            copy_dataset_projection(data_projection, tmp);
         }
     }
     return error_code;
@@ -107,7 +129,7 @@ int check_connections(data_connections_t &dataConnections)
 void copy_dataset(dataset_t &dataset, const dataset_t &dataset_source)
 {
     if (!check_points(dataset.dataPoints))
-        free_dataset_points_arr(dataset.dataPoints);
+        free_dataset_points(dataset.dataPoints);
     if (!check_connections(dataset.dataConnections))
         free_dataset_connections(dataset.dataConnections);
     dataset.dataPoints = dataset_source.dataPoints;

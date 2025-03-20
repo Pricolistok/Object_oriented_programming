@@ -175,7 +175,7 @@ int read_dataset_from_file(data_points_t &dataPoints, data_connections_t &dataCo
         {
             error_code = read_dataset_connections(dataConnections, file_source);
             if (error_code != OK)
-                free_dataset_points_arr(dataPoints);
+                free_dataset_points(dataPoints);
         }
     }
 

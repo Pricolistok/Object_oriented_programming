@@ -21,4 +21,5 @@ int read_dataset_points(data_points_t &dataPoints, FILE *file_source);
 int read_dataset_from_file(data_points_t &dataPoints, data_connections_t &dataConnections, FILE *file_source);
 int read_dataset(dataset_t &dataset, const char *file_name);
 
+
 #endif //LAB_01_READ_DATA_H
