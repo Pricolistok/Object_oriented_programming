@@ -9,23 +9,23 @@
 #include <cstdlib>
 
 
-void transform_point_to_draw(point_draw_t &point_draw, const point_t point_source)
+void transform_point_to_projection(point_projection_t &point_draw, const point_t &point_source)
 {
     point_draw.x = point_source.x;
     point_draw.y = point_source.y;
 }
 
-int transform_points_for_draw(data_points_draw_t &data_draw, const data_points_t &data_source)
+int transform_points_to_projection(data_points_projection_t &data_projection, const data_points_t &data_source)
 {
     int error_code = OK;
-    data_draw.points = (point_draw_t *) malloc(sizeof(point_draw_t) * data_source.cnt_points);
-    if (!data_draw.points)
+    data_projection.points = add_memory_for_point_projection(data_source.cnt_points);
+    if (!data_projection.points)
         error_code = ERROR_ADD_MEMORY;
     else
     {
-        data_draw.cnt_points = data_source.cnt_points;
+        data_projection.cnt_points = data_source.cnt_points;
         for (size_t i = 0; i < data_source.cnt_points; i++)
-            transform_point_to_draw(data_draw.points[i], data_source.points[i]);
+            transform_point_to_projection(data_projection.points[i], data_source.points[i]);
     }
     return error_code;
 }
@@ -40,11 +40,11 @@ int copy_connection(connection_t &data_tmp, connection_t &data_source, int cnt_d
     return error_code;
 }
 
-int transform_connections_to_draw(data_connections_t &data_tmp, const data_connections_t &data_source, const data_points_t &dataPoints)
+int transform_connections_to_projection(data_connections_t &data_tmp, const data_connections_t &data_source, const data_points_t &dataPoints)
 {
     int error_code = OK;
     size_t iter = 0;
-    data_tmp.connections = (connection_t *) malloc(sizeof(connection_t ) * data_source.cnt_connections);
+    data_tmp.connections = add_memory_for_connections(data_source.cnt_connections);
     if (!data_tmp.connections)
         error_code = ERROR_ADD_MEMORY;
     else
@@ -56,15 +56,15 @@ int transform_connections_to_draw(data_connections_t &data_tmp, const data_conne
             iter++;
         }
         if (error_code != OK)
-            free(data_source.connections);
+            free_connections_array(data_source.connections);
     }
     return error_code;
 }
 
 
-void copy_tmp_points(data_points_draw_t &data_points_draw, const data_points_draw_t &tmp_data_points)
+void copy_tmp_points(data_points_projection_t &data_points_projection, const data_points_projection_t &tmp_data_points)
 {
-    data_points_draw = tmp_data_points;
+    data_points_projection = tmp_data_points;
 }
 
 void copy_tmp_connections(data_connections_t &data_connections_draw, const data_connections_t &tmp_data_connections)
@@ -72,21 +72,21 @@ void copy_tmp_connections(data_connections_t &data_connections_draw, const data_
     data_connections_draw = tmp_data_connections;
 }
 
-
-int transform_data_for_paint(dataset_draw_t &data_draw, const dataset_t &data_source)
+int transform_data_to_projection(dataset_projection_t &data_draw, const dataset_t &data_source)
 {
     int error_code = OK;
-    dataset_draw_t tmp;
-    error_code = transform_points_for_draw(tmp.dataPoints, data_source.dataPoints);
+    dataset_projection_t tmp;
+    error_code = transform_points_to_projection(tmp.dataPoints, data_source.dataPoints);
     if (error_code == OK)
     {
-        error_code = transform_connections_to_draw(tmp.dataConnections, data_source.dataConnections, data_source.dataPoints);
+        error_code = transform_connections_to_projection(tmp.dataConnections, data_source.dataConnections,
+                                                         data_source.dataPoints);
         if (error_code != OK)
-            free_points_draw(tmp.dataPoints);
+            free_dataset_points_projection(tmp.dataPoints);
         else
         {
-            free_points_draw(data_draw.dataPoints);
-            free_connections_arr(data_draw.dataConnections);
+            free_dataset_points_projection(data_draw.dataPoints);
+            free_dataset_connections(data_draw.dataConnections);
             copy_tmp_points(data_draw.dataPoints, tmp.dataPoints);
             copy_tmp_connections(data_draw.dataConnections, tmp.dataConnections);
         }
@@ -94,11 +94,39 @@ int transform_data_for_paint(dataset_draw_t &data_draw, const dataset_t &data_so
     return error_code;
 }
 
-int work_with_file(dataset_t &dataset, const char *filename)
+int check_points(data_points_t &dataPoints)
 {
-    int error_code = read_dataset(dataset, filename);
+    return dataPoints.points == NULL;
+}
+
+int check_connections(data_connections_t &dataConnections)
+{
+    return dataConnections.connections == NULL;
+}
+
+void copy_dataset(dataset_t &dataset, const dataset_t &dataset_source)
+{
+    if (!check_points(dataset.dataPoints))
+        free_dataset_points_arr(dataset.dataPoints);
+    if (!check_connections(dataset.dataConnections))
+        free_dataset_connections(dataset.dataConnections);
+    dataset.dataPoints = dataset_source.dataPoints;
+    dataset.dataConnections = dataset_source.dataConnections;
+}
+
+
+int load_file(dataset_t &dataset, const char *filename)
+{
+    dataset_t tmp;
+    int error_code = read_dataset(tmp, filename);
     if (error_code == OK)
-        error_code = validate_dataset(dataset);
+    {
+        error_code = validate_dataset(tmp);
+        if (error_code == OK)
+            copy_dataset(dataset, tmp);
+        else
+            free_dataset(tmp);
+    }
     return error_code;
 }
 

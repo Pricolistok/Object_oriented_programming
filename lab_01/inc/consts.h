@@ -3,7 +3,7 @@
 
 typedef enum command
 {
-    TRANSFER,
+    MOVE,
     SCALE,
     ROTATE,
     RELOAD,

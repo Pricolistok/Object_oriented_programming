@@ -6,14 +6,14 @@ double transformation_param_transfer(const double data, const double param)
     return data + param;
 }
 
-void transfer_dot(point_t &point, const transfer_param_t &transferParam)
+void move_dot(point_t &point, const transfer_param_t &transferParam)
 {
     point.x = transformation_param_transfer(point.x, transferParam.dx);
     point.y = transformation_param_transfer(point.y, transferParam.dy);
     point.z = transformation_param_transfer(point.z, transferParam.dz);
 }
 
-int transfer_dots(data_points_t &dataset_points, const transfer_param_t transferParam)
+int move_dots(data_points_t &dataset_points, const transfer_param_t &transferParam)
 {
     int error_code = OK;
     if (!dataset_points.points)
@@ -21,14 +21,14 @@ int transfer_dots(data_points_t &dataset_points, const transfer_param_t transfer
     else
     {
         for (size_t i = 0; i < dataset_points.cnt_points; i++)
-            transfer_dot(dataset_points.points[i], transferParam);
+            move_dot(dataset_points.points[i], transferParam);
     }
     return error_code;
 }
 
-int transfer_dataset(dataset_t &dataset, const transfer_param_t transferParam)
+int move_dataset(dataset_t &dataset, const transfer_param_t &transferParam)
 {
-    return transfer_dots(dataset.dataPoints, transferParam);
+    return move_dots(dataset.dataPoints, transferParam);
 }
 
 
@@ -37,14 +37,14 @@ double transformation_param_scale(const double data, const double param)
     return data * param;
 }
 
-void scale_dot(point_t &point, const scale_param &scaleParam)
+void scale_dot(point_t &point, const scale_param_t &scaleParam)
 {
     point.x = transformation_param_scale(point.x, scaleParam.kx);
     point.y = transformation_param_scale(point.y, scaleParam.ky);
     point.z = transformation_param_scale(point.z, scaleParam.kz);
 }
 
-int scale_dots(data_points_t &dataset_points, const scale_param_t scaleParam)
+int scale_dots(data_points_t &dataset_points, const scale_param_t &scaleParam)
 {
     int error_code = OK;
     if (!dataset_points.points)
@@ -57,13 +57,13 @@ int scale_dots(data_points_t &dataset_points, const scale_param_t scaleParam)
     return error_code;
 }
 
-int scale_dataset(dataset_t &dataset, const scale_param_t scaleParam)
+int scale_dataset(dataset_t &dataset, const scale_param_t &scaleParam)
 {
     return scale_dots(dataset.dataPoints, scaleParam);
 }
 
 
-void transformation_param_rotate(point_t &data, const trigonometry_data_t &trigonometry_data)
+void transformation_param_rotate(point_t &data, const trigonometry_dataset_t &trigonometry_data)
 {
     double y1 = data.y * trigonometry_data.cosX - data.z * trigonometry_data.sinX;
     double z1 = data.y * trigonometry_data.sinX + data.z * trigonometry_data.cosX;
@@ -92,37 +92,38 @@ void transform_angles(angle_rad_t &angle_mod, const rotate_param_t &rotateParam)
     angle_mod.radZ = transform_angle(rotateParam.angle_z);
 }
 
-void set_trigonometry_data(trigonometry_data_t &trigonometry_data, const angle_rad_t &angle_mod)
+void set_trigonometry(double &cos_data, double &sin_data, double angle)
 {
-    trigonometry_data.cosX = cos(angle_mod.radX);
-    trigonometry_data.sinX = sin(angle_mod.radX);
+    cos_data = cos(angle);
+    sin_data = sin(angle);
+}
 
-    trigonometry_data.cosY = cos(angle_mod.radY);
-    trigonometry_data.sinY= sin(angle_mod.radY);
-
-    trigonometry_data.cosZ = cos(angle_mod.radZ);
-    trigonometry_data.sinZ = sin(angle_mod.radZ);
+void set_trigonometry_dataset(trigonometry_dataset_t &trigonometry_dataset, const angle_rad_t &angle_mod)
+{
+    set_trigonometry(trigonometry_dataset.cosX, trigonometry_dataset.sinX, angle_mod.radX);
+    set_trigonometry(trigonometry_dataset.cosY, trigonometry_dataset.sinY, angle_mod.radY);
+    set_trigonometry(trigonometry_dataset.cosZ, trigonometry_dataset.sinZ, angle_mod.radZ);
 }
 
 
-int rotate_dots(data_points_t &dataset_points, const rotate_param_t rotateParam)
+int rotate_dots(data_points_t &dataset_points, const rotate_param_t &rotateParam)
 {
     int error_code = OK;
     angle_rad_t angle_mod;
-    trigonometry_data_t trigonometry_data;
+    trigonometry_dataset_t trigonometry_data;
     if (!dataset_points.points)
         error_code = ERROR_ADD_MEMORY;
     else
     {
         transform_angles(angle_mod, rotateParam);
-        set_trigonometry_data(trigonometry_data, angle_mod);
+        set_trigonometry_dataset(trigonometry_data, angle_mod);
         for (size_t i = 0; i < dataset_points.cnt_points; i++)
             transformation_param_rotate(dataset_points.points[i], trigonometry_data);
     }
     return error_code;
 }
 
-int rotate_dataset(dataset_t &dataset, const rotate_param_t rotateParam)
+int rotate_dataset(dataset_t &dataset, const rotate_param_t &rotateParam)
 {
     return rotate_dots(dataset.dataPoints, rotateParam);
 }

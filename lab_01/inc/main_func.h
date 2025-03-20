@@ -4,7 +4,7 @@
 #include "../inc/struct.h"
 #include "../inc/consts.h"
 
-int transform_data(dataset_draw_t &dataset_paint, const request_t &request);
+int transform_data(dataset_projection_t &dataset_projection, const request_t &request);
 
 
 

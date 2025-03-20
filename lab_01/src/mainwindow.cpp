@@ -20,10 +20,10 @@ void MainWindow::work_with_errors(int error_code)
             display_error_message("Ошибка при считывании длины!");
             exit(ERROR_LEN_DATA);
         case ERROR_VALUE_IN_FILE:
-            display_error_message("Ошибка при данных из файла!");
+            display_error_message("Ошибка при чтении данных из файла!");
             exit(ERROR_VALUE_IN_FILE);
         case ERROR_ADD_MEMORY:
-            display_error_message("Ошибка при выделении данных!");
+            display_error_message("Ошибка при выделении памяти!");
             exit(ERROR_ADD_MEMORY);
         case OK:
             drawWidget->update();
@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     int error_code;
     request_t request;
-    request.command = RELOAD;
+    request.command = LOAD;
     request.filename = FILE_SOURCE;
     ui->setupUi(this);
     ui->widget->setStyleSheet("background-color:black;");
@@ -94,7 +94,7 @@ void MainWindow::read_data_from_transfer()
         display_error_message("Ошибка при вводе сдвига по Z!");
     }
     if (error == 0)
-        sender_data(x_result, y_result, z_result, TRANSFER);
+        sender_data(x_result, y_result, z_result, MOVE);
 }
 
 void MainWindow::restart_picture()
@@ -193,11 +193,11 @@ void MainWindow::sender_data(double data_x, double data_y, double data_z, const 
     request.filename = FILE_SOURCE;
     switch (mode_reset)
     {
-        case TRANSFER:
+        case MOVE:
             request.transferParam.dx = data_x;
             request.transferParam.dy = data_y;
             request.transferParam.dz = data_z;
-            request.command = TRANSFER;
+            request.command = MOVE;
             break;
 
         case SCALE:

@@ -92,7 +92,7 @@ typedef struct angle_rad
 } angle_rad_t;
 
 
-typedef struct trigonometry_data
+typedef struct trigonometry_dataset
 {
     double cosX;
     double sinX;
@@ -100,27 +100,27 @@ typedef struct trigonometry_data
     double sinY;
     double cosZ;
     double sinZ;
-} trigonometry_data_t;
+} trigonometry_dataset_t;
 
 
 typedef struct point_draw
 {
     double x;
     double y;
-} point_draw_t;
+} point_projection_t;
 
 
-typedef struct data_points_draw
+typedef struct data_points_projection
 {
     size_t cnt_points;
-    point_draw_t *points;
-} data_points_draw_t;
+    point_projection_t *points;
+} data_points_projection_t;
 
 
-typedef struct dataset_draw
+typedef struct dataset_projection
 {
-    data_points_draw dataPoints;
+    data_points_projection dataPoints;
     data_connections_t dataConnections;
-} dataset_draw_t;
+} dataset_projection_t;
 
 #endif

@@ -40,11 +40,10 @@ int read_array_points(point_t *points, FILE *file_source, const size_t cnt_point
 
     if (!file_source)
         error_code = ERROR_OPEN_FILE;
-    else
-    {
-        if (!points)
-            error_code = ERROR_ADD_MEMORY;
-    }
+    else if (!points)
+        error_code = ERROR_ADD_MEMORY;
+    if (error_code != OK)
+        return error_code;
 
     size_t iter = 0;
 
@@ -63,14 +62,14 @@ int read_points(point_t *&points, FILE *file_source, const size_t cnt_points)
         error_code = ERROR_OPEN_FILE;
     else
     {
-        points = (point_t *)malloc(sizeof(point_t) * cnt_points);
+        points = add_memory_for_point(cnt_points);
         if (!points)
             error_code = ERROR_OPEN_FILE;
         else
         {
             error_code = read_array_points(points, file_source, cnt_points);
             if (error_code != OK)
-                free(points);
+                free_points_array(points);
         }
     }
     return error_code;
@@ -111,11 +110,10 @@ int read_array_connections(connection_t *connections, FILE *file_source, const s
     int error_code = OK;
     if (!file_source)
         error_code = ERROR_OPEN_FILE;
-    else
-    {
-        if (!connections)
-            error_code = ERROR_ADD_MEMORY;
-    }
+    else if (!connections)
+        error_code = ERROR_ADD_MEMORY;
+    if (error_code != OK)
+        return error_code;
 
     size_t iter = 0;
 
@@ -134,14 +132,14 @@ int read_connections(connection_t *&connections, FILE *file_source, const size_t
         error_code = ERROR_OPEN_FILE;
     else
     {
-        connections = (connection_t *)malloc(sizeof(connection_t) * cnt_connections);
+        connections = add_memory_for_connections(cnt_connections);
         if (!connections)
             error_code = ERROR_ADD_MEMORY;
         else
         {
             error_code = read_array_connections(connections, file_source, cnt_connections);
             if (error_code != OK)
-                free(connections);
+                free_connections_array(connections);
         }
     }
     return error_code;
@@ -177,7 +175,7 @@ int read_dataset_from_file(data_points_t &dataPoints, data_connections_t &dataCo
         {
             error_code = read_dataset_connections(dataConnections, file_source);
             if (error_code != OK)
-                free_points_arr(dataPoints);
+                free_dataset_points_arr(dataPoints);
         }
     }
 
@@ -196,8 +194,10 @@ int read_dataset(dataset_t &dataset, const char *file_name)
     if (!file_source)
         error_code = ERROR_OPEN_FILE;
     else
+    {
         error_code = read_dataset_from_file(dataset.dataPoints, dataset.dataConnections, file_source);
+        fclose(file_source);
+    }
 
-    fclose(file_source);
     return error_code;
 }
