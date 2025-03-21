@@ -6,7 +6,7 @@
 #include "struct.h"
 
 
-int read_len_from_file(size_t &cnt_data, FILE *file_source);
+int read_len_from_file(int &cnt_data, FILE *file_source);
 
 int read_connection_from_file(connection_t &connection, FILE *file_source);
 int read_array_connections(connection_t *connections, FILE *file_source, const size_t cnt_connections);

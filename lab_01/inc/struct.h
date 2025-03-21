@@ -66,13 +66,13 @@ typedef struct connection
 
 typedef struct data_points
 {
-    size_t cnt_points;
+    int cnt_points;
     point_t *points;
 } data_points_t;
 
 typedef struct data_connections
 {
-    size_t cnt_connections;
+    int cnt_connections;
     connection *connections;
 } data_connections_t;
 

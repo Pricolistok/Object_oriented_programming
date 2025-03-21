@@ -28,7 +28,7 @@ void MyDrawWidget::paintEvent(QPaintEvent *event)
     for (size_t i = 0; i < data.dataPoints.cnt_points; i++)
         painter.drawEllipse(QPointF(get_x(i), get_y(i)), 1, 1);
 
-    for (size_t i = 0; i < data.dataConnections.cnt_connections; i++)
+    for (int i = 0; i < data.dataConnections.cnt_connections; i++)
     {
         conn = data.dataConnections.connections[i];
         x1 = get_x(conn.index_dot_1);

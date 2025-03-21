@@ -26,73 +26,120 @@ int transform_points_array_to_projection(data_points_projection_t &data_projecti
     if (error_code != OK)
         return error_code;
 
-    for (size_t i = 0; i < data_source.cnt_points; i++)
+    for (int i = 0; i < data_source.cnt_points; i++)
         transform_point_to_projection(data_projection.points[i], data_source.points[i]);
 
     return error_code;
 }
 
+
 int transform_points_to_projection(data_points_projection_t &data_projection, const data_points_t &data_source)
 {
     int error_code = OK;
-    data_projection.points = add_memory_for_point_projection(data_source.cnt_points);
-    if (!data_projection.points)
-        error_code = ERROR_ADD_MEMORY;
-    else
+    error_code = malloc_for_projection_dataset(data_projection, data_source);
+    if (error_code == OK)
     {
-        data_projection.cnt_points = data_source.cnt_points;
-        error_code = transform_points_array_to_projection(data_projection, data_source);
+        error_code = copy_cnt_points(data_projection, data_source);
+        if (error_code != OK)
+            free_dataset_points_projection(data_projection);
+        else
+        {
+            error_code = transform_points_array_to_projection(data_projection, data_source);
+            if (error_code != OK)
+                free_dataset_points_projection(data_projection);
+        }
+
     }
     return error_code;
 }
 
-int copy_connection(connection_t &data_tmp, connection_t &data_source, int cnt_dots)
+int copy_connection(connection_t &data_result, connection_t &data_source, int cnt_dots)
 {
     int error_code = OK;
     if (data_source.index_dot_1 < cnt_dots && data_source.index_dot_2 < cnt_dots && data_source.index_dot_1 >= 0 && data_source.index_dot_2 >= 0)
-        data_tmp = data_source;
+    {
+        data_result.index_dot_1 = data_source.index_dot_1;
+        data_result.index_dot_2 = data_source.index_dot_2;
+    }
     else
         error_code = ERROR_VALUE_IN_FILE;
     return error_code;
 }
 
-int transform_connections_to_projection(data_connections_t &data_tmp, const data_connections_t &data_source, const data_points_t &dataPoints)
+int copy_cnt_points(data_points_projection_t &data_result, const data_points_t &data_source)
 {
     int error_code = OK;
-    size_t iter = 0;
-    data_tmp.connections = add_memory_for_connections(data_source.cnt_connections);
-    if (!data_tmp.connections)
-        error_code = ERROR_ADD_MEMORY;
+    if (data_source.cnt_points <= 0)
+        error_code = ERROR_LEN_DATA;
     else
+        data_result.cnt_points = data_source.cnt_points;
+    return error_code;
+}
+
+int copy_cnt_connections(data_connections_t &data_result, const data_connections_t &data_source)
+{
+    int error_code = OK;
+    if (data_source.cnt_connections <= 0)
+        error_code = ERROR_LEN_DATA;
+    else
+        data_result.cnt_connections = data_source.cnt_connections;
+    return error_code;
+}
+
+int transform_connections_array_to_projection(data_connections_t &data_result, const data_connections_t &data_source, const int cnt_points)
+{
+    int error_code = OK;
+    int iter = 0;
+    if (!data_result.connections || !data_source.connections)
+        error_code = ERROR_ADD_MEMORY;
+    else if (data_result.cnt_connections <= 0 || data_source.cnt_connections <= 0)
+        error_code = ERROR_LEN_DATA;
+    if (error_code != OK)
+        return error_code;
+
+    while (error_code == OK && iter < data_source.cnt_connections)
     {
-        data_tmp.cnt_connections = data_source.cnt_connections;
-        while (error_code == OK && iter < data_source.cnt_connections)
-        {
-            error_code = copy_connection(data_tmp.connections[iter], data_source.connections[iter], dataPoints.cnt_points);
-            iter++;
-        }
+        error_code = copy_connection(data_result.connections[iter], data_source.connections[iter], cnt_points);
+        iter++;
+    }
+    return error_code;
+}
+
+int transform_connections_to_projection(data_connections_t &data_result, const data_connections_t &data_source, const data_points_t &dataPoints)
+{
+    int error_code = OK;
+    error_code = malloc_for_connection_dataset(data_result, data_source);
+    if (error_code == OK)
+    {
+        error_code = copy_cnt_connections(data_result, data_source);
         if (error_code != OK)
-            free_connections_array(data_source.connections);
+            free_dataset_connections(data_result);
+        else
+        {
+            error_code = transform_connections_array_to_projection(data_result, data_source, dataPoints.cnt_points);
+            if (error_code != OK)
+                free_dataset_connections(data_result);
+        }
     }
     return error_code;
 }
 
 
-void copy_tmp_points(data_points_projection_t &data_points_projection, const data_points_projection_t &tmp_data_points)
+void copy_tmp_points_dataset(data_points_projection_t &data_points_projection, const data_points_projection_t &tmp_data_points)
 {
     data_points_projection = tmp_data_points;
 }
 
-void copy_tmp_connections(data_connections_t &data_connections_draw, const data_connections_t &tmp_data_connections)
+void copy_tmp_connections_dataset(data_connections_t &data_connections_draw, const data_connections_t &tmp_data_connections)
 {
     data_connections_draw = tmp_data_connections;
 }
 
 
-void copy_dataset_projection(dataset_projection_t &data_projection, const dataset_projection_t &source)
+void copy_dataset_projection(dataset_projection_t &data_projection, const data_points_projection_t &pointsProjection, const data_connections_t &dataConnections)
 {
-    copy_tmp_points(data_projection.dataPoints, source.dataPoints);
-    copy_tmp_connections(data_projection.dataConnections, source.dataConnections);
+    copy_tmp_points_dataset(data_projection.dataPoints, pointsProjection);
+    copy_tmp_connections_dataset(data_projection.dataConnections, dataConnections);
 }
 
 
@@ -110,7 +157,7 @@ int transform_data_to_projection(dataset_projection_t &data_projection, const da
         else
         {
             free_dataset_projection(data_projection);
-            copy_dataset_projection(data_projection, tmp);
+            copy_dataset_projection(data_projection, tmp.dataPoints, tmp.dataConnections);
         }
     }
     return error_code;

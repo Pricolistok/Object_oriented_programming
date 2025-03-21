@@ -6,9 +6,9 @@
 #include "../inc/consts.h"
 #include "../inc/struct.h"
 
-#define FILE_SOURCE "data/data_cube.txt"
+//#define FILE_SOURCE "data/data_cube.txt"
 //#define FILE_SOURCE "data/data_pyramid.txt"
-//#define FILE_SOURCE "data/data_cat.txt"
+#define FILE_SOURCE "data/data_cat.txt"
 
 #define LEN_TEXT_ERROR_MESSAGE 150
 

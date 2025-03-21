@@ -22,7 +22,7 @@ int move_dots(data_points_t &dataset_points, const transfer_param_t &transferPar
         error_code = ERROR_ADD_MEMORY;
     else
     {
-        for (size_t i = 0; i < dataset_points.cnt_points; i++)
+        for (int i = 0; i < dataset_points.cnt_points; i++)
             move_dot(dataset_points.points[i], transferParam);
     }
     return error_code;
@@ -56,7 +56,7 @@ int scale_dots(data_points_t &dataset_points, const scale_param_t &scaleParam)
         error_code = ERROR_ADD_MEMORY;
     else
     {
-        for (size_t i = 0; i < dataset_points.cnt_points; i++)
+        for (int i = 0; i < dataset_points.cnt_points; i++)
             scale_dot(dataset_points.points[i], scaleParam);
     }
     return error_code;
@@ -132,7 +132,7 @@ int rotate_array_dots(data_points_t &dataset_points, const rotate_param_t &rotat
     transform_angles(angle_mod, rotateParam);
     set_trigonometry_dataset(trigonometry_data, angle_mod);
 
-    for (size_t i = 0; i < dataset_points.cnt_points; i++)
+    for (int i = 0; i < dataset_points.cnt_points; i++)
         transformation_param_rotate(dataset_points.points[i], trigonometry_data);
 
     return error_code;

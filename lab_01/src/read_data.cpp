@@ -3,7 +3,7 @@
 #include "../inc/utils.h"
 
 
-int read_len_from_file(size_t &cnt_data, FILE *file_source)
+int read_len_from_file(int &cnt_data, FILE *file_source)
 {
     int rc, error_code = OK;
 
@@ -11,7 +11,7 @@ int read_len_from_file(size_t &cnt_data, FILE *file_source)
         error_code = ERROR_OPEN_FILE;
     else
     {
-        rc = fscanf(file_source, "%zu", &cnt_data);
+        rc = fscanf(file_source, "%d", &cnt_data);
         if (rc != 1)
             error_code = ERROR_VALUE_IN_FILE;
         else if (cnt_data <= 0)
@@ -62,10 +62,8 @@ int read_points(point_t *&points, FILE *file_source, const size_t cnt_points)
         error_code = ERROR_OPEN_FILE;
     else
     {
-        points = add_memory_for_point(cnt_points);
-        if (!points)
-            error_code = ERROR_OPEN_FILE;
-        else
+        error_code = malloc_for_point(points, cnt_points);
+        if (error_code == OK)
         {
             error_code = read_array_points(points, file_source, cnt_points);
             if (error_code != OK)
@@ -132,10 +130,8 @@ int read_connections(connection_t *&connections, FILE *file_source, const size_t
         error_code = ERROR_OPEN_FILE;
     else
     {
-        connections = add_memory_for_connections(cnt_connections);
-        if (!connections)
-            error_code = ERROR_ADD_MEMORY;
-        else
+        error_code = malloc_for_connections(connections, cnt_connections);
+        if (error_code == OK)
         {
             error_code = read_array_connections(connections, file_source, cnt_connections);
             if (error_code != OK)
