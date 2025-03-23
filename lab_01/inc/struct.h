@@ -112,7 +112,7 @@ typedef struct point_draw
 
 typedef struct data_points_projection
 {
-    size_t cnt_points;
+    int cnt_points;
     point_projection_t *points;
 } data_points_projection_t;
 

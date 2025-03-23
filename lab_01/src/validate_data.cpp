@@ -5,7 +5,7 @@
 int validate_connection(const connection_t &connection, const int cnt_points)
 {
     int error_code = OK;
-    if (connection.index_dot_1 >= cnt_points || connection.index_dot_2 > cnt_points)
+    if (connection.index_dot_1 >= cnt_points || connection.index_dot_2 >= cnt_points) // а на отрицательные
         error_code = ERROR_VALUE_IN_FILE;
     return error_code;
 }

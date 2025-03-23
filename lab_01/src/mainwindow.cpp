@@ -25,6 +25,9 @@ void MainWindow::work_with_errors(int error_code)
         case ERROR_ADD_MEMORY:
             display_error_message("Ошибка при выделении памяти!");
             exit(ERROR_ADD_MEMORY);
+        case ERROR_COMMAND:
+            display_error_message("Ошибка при вызове функции!");
+            exit (ERROR_COMMAND);
         case OK:
             drawWidget->update();
             break;
@@ -102,9 +105,9 @@ void MainWindow::restart_picture()
     request_t request;
     int error_code = OK;
     request.filename = FILE_SOURCE;
+    request.command = RELOAD;
     free(drawWidget->data.dataPoints.points);
     free(drawWidget->data.dataConnections.connections);
-    request.command = RELOAD;
     drawWidget->data.dataPoints.points = NULL;
     drawWidget->data.dataConnections.connections = NULL;
     error_code = transform_data(drawWidget->data, request);
@@ -237,6 +240,8 @@ MainWindow::~MainWindow()
 {
     request_t request;
     request.command = FREE;
+    free(drawWidget->data.dataPoints.points);
+    free(drawWidget->data.dataConnections.connections);
     transform_data(drawWidget->data, request);
     delete ui;
 }

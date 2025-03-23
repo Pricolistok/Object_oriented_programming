@@ -15,19 +15,19 @@ void transform_point_to_projection(point_projection_t &point_draw, const point_t
     point_draw.y = point_source.y;
 }
 
-int transform_points_array_to_projection(data_points_projection_t &data_projection, const data_points_t &data_source)
+int transform_points_array_to_projection(point_projection_t *&data_projection_points, const int cnt_points_projections, const int cnt_points_source, const point_t *data_source_points)
 {
     int error_code = OK;
 
-    if (!data_projection.points || !data_source.points)
+    if (!data_projection_points || !data_source_points)
         error_code = ERROR_ADD_MEMORY;
-    else if (data_projection.cnt_points <= 0 || data_source.cnt_points <= 0)
+    else if (cnt_points_projections <= 0 || cnt_points_source <= 0)
         error_code = ERROR_LEN_DATA;
     if (error_code != OK)
         return error_code;
 
-    for (int i = 0; i < data_source.cnt_points; i++)
-        transform_point_to_projection(data_projection.points[i], data_source.points[i]);
+    for (int i = 0; i < cnt_points_source; i++)
+        transform_point_to_projection(data_projection_points[i], data_source_points[i]);
 
     return error_code;
 }
@@ -36,24 +36,24 @@ int transform_points_array_to_projection(data_points_projection_t &data_projecti
 int transform_points_to_projection(data_points_projection_t &data_projection, const data_points_t &data_source)
 {
     int error_code = OK;
-    error_code = malloc_for_projection_dataset(data_projection, data_source);
+    error_code = malloc_for_point_projection(data_projection.points, data_source.cnt_points);
     if (error_code == OK)
     {
-        error_code = copy_cnt_points(data_projection, data_source);
+        error_code = copy_cnt_points(data_projection.cnt_points, data_source.cnt_points);
         if (error_code != OK)
-            free_dataset_points_projection(data_projection);
+            free_points_projection_array(data_projection.points);
         else
         {
-            error_code = transform_points_array_to_projection(data_projection, data_source);
+            error_code = transform_points_array_to_projection(data_projection.points, data_projection.cnt_points, data_source.cnt_points, data_source.points);
             if (error_code != OK)
-                free_dataset_points_projection(data_projection);
+                free_points_projection_array(data_projection.points);
         }
 
     }
     return error_code;
 }
 
-int copy_connection(connection_t &data_result, connection_t &data_source, int cnt_dots)
+int copy_connection(connection_t &data_result, const connection_t &data_source, int cnt_dots)
 {
     int error_code = OK;
     if (data_source.index_dot_1 < cnt_dots && data_source.index_dot_2 < cnt_dots && data_source.index_dot_1 >= 0 && data_source.index_dot_2 >= 0)
@@ -66,40 +66,40 @@ int copy_connection(connection_t &data_result, connection_t &data_source, int cn
     return error_code;
 }
 
-int copy_cnt_points(data_points_projection_t &data_result, const data_points_t &data_source)
+int copy_cnt_points(int &cnt_result, const int &cnt_source)
 {
     int error_code = OK;
-    if (data_source.cnt_points <= 0)
+    if (cnt_source <= 0)
         error_code = ERROR_LEN_DATA;
     else
-        data_result.cnt_points = data_source.cnt_points;
+        cnt_result = cnt_source;
     return error_code;
 }
 
-int copy_cnt_connections(data_connections_t &data_result, const data_connections_t &data_source)
+int copy_cnt_connections(int &cnt_connections_projections, const int &cnt_connections_source)
 {
     int error_code = OK;
-    if (data_source.cnt_connections <= 0)
+    if (cnt_connections_source <= 0)
         error_code = ERROR_LEN_DATA;
     else
-        data_result.cnt_connections = data_source.cnt_connections;
+        cnt_connections_projections = cnt_connections_source;
     return error_code;
 }
 
-int transform_connections_array_to_projection(data_connections_t &data_result, const data_connections_t &data_source, const int cnt_points)
+int transform_connections_array_to_projection(connection_t *connections_result, const int &cnt_connections_projections, const int &cnt_connections_source, const connection_t *connections_source, const int cnt_points)
 {
     int error_code = OK;
     int iter = 0;
-    if (!data_result.connections || !data_source.connections)
+    if (!connections_result || !connections_source)
         error_code = ERROR_ADD_MEMORY;
-    else if (data_result.cnt_connections <= 0 || data_source.cnt_connections <= 0)
+    else if (cnt_connections_projections <= 0 || cnt_connections_source <= 0)
         error_code = ERROR_LEN_DATA;
     if (error_code != OK)
         return error_code;
 
-    while (error_code == OK && iter < data_source.cnt_connections)
+    while (error_code == OK && iter < cnt_connections_source)
     {
-        error_code = copy_connection(data_result.connections[iter], data_source.connections[iter], cnt_points);
+        error_code = copy_connection(connections_result[iter], connections_source[iter], cnt_points);
         iter++;
     }
     return error_code;
@@ -108,17 +108,17 @@ int transform_connections_array_to_projection(data_connections_t &data_result, c
 int transform_connections_to_projection(data_connections_t &data_result, const data_connections_t &data_source, const data_points_t &dataPoints)
 {
     int error_code = OK;
-    error_code = malloc_for_connection_dataset(data_result, data_source);
+    error_code = malloc_for_connections(data_result.connections, data_source.cnt_connections);
     if (error_code == OK)
     {
-        error_code = copy_cnt_connections(data_result, data_source);
+        error_code = copy_cnt_connections(data_result.cnt_connections, data_source.cnt_connections);
         if (error_code != OK)
-            free_dataset_connections(data_result);
+            free_connections_array(data_result.connections);
         else
         {
-            error_code = transform_connections_array_to_projection(data_result, data_source, dataPoints.cnt_points);
+            error_code = transform_connections_array_to_projection(data_result.connections, data_result.cnt_connections, data_source.cnt_connections, data_source.connections, dataPoints.cnt_points);
             if (error_code != OK)
-                free_dataset_connections(data_result);
+                free_connections_array(data_result.connections);
         }
     }
     return error_code;

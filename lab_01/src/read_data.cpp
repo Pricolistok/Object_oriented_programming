@@ -96,8 +96,6 @@ int read_connection_from_file(connection_t &connection, FILE *file_source)
     rc = fscanf(file_source, "%d %d", &connection.index_dot_1, &connection.index_dot_2);
     if (rc != 2)
         error_code = ERROR_VALUE_IN_FILE;
-    if (connection.index_dot_1 < 0 || connection.index_dot_2 < 0)
-        error_code = ERROR_VALUE_IN_FILE;
 
     return error_code;
 }

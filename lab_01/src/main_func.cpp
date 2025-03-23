@@ -26,11 +26,16 @@ int transform_data(dataset_projection_t &dataset_projection, const request_t &re
         case LOAD:
             error_code = load_file(dataset, request.filename);
             break;
+        case RELOAD:
+            free_dataset(dataset);
+            dataset = init_dataset();
+            error_code = load_file(dataset, request.filename);
+            break;
         case FREE:
             free_dataset(dataset);
-            free_dataset_projection(dataset_projection);
             break;
         default:
+            error_code = ERROR_COMMAND;
             break;
     }
 
